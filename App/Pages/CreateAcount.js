@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image } from 'react-native';
+import React, { useState } from 'react';
 
-export default function App() {
+
+export default function () {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     return (
         <View style={styles.container}>
@@ -15,8 +17,7 @@ export default function App() {
                     marginBottom: 20
                 }}
             />
-            <Text style={styles.welcome}>Bem-vindo(a) ao</Text>
-            <Text style={styles.title}>GAIA</Text>
+            <Text style={styles.title}>Cadastrar</Text>
             <TextInput
                 style={styles.input}
                 placeholder="E-mail"
@@ -34,20 +35,22 @@ export default function App() {
                 secureTextEntry
             />
 
-            <TouchableOpacity style={styles.passwordButton}>
-                <Text style={styles.passwordButtonText}>Esqueceu a senha?</Text>
-            </TouchableOpacity>
+            <TextInput
+                style={styles.input}
+                placeholder="Confirmar senha"
+                value={confirmPassword}
+                onChangeText={text => setConfirmPassword(text)}
+                secureTextEntry
+            />
 
             {/* ADD AUTENTICAÇÃO E ROTA PARA HOME */}
             <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Entrar</Text>
+                <Text style={styles.buttonText}>Cadastrar</Text>
             </TouchableOpacity>
 
-            <Text style={{ color: '#165B42', margin: 10 }}>OU</Text>
-
             {/* ADD ROTA PARA CRIAR CONTA */}
-            <TouchableOpacity style={styles.createAccountButton}>
-                <Text style={styles.createAccountButtonText}>Criar conta</Text>
+            <TouchableOpacity style={styles.accountButton}>
+                <Text style={styles.accountButtonText}>Já tem uma conta?</Text>
             </TouchableOpacity>
         </View>
     );
@@ -62,14 +65,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
     },
     title: {
-        fontSize: 32,
+        fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 35,
-        color: "#165B42"
-    },
-    welcome: {
-        fontSize: 32,
-        fontWeight: 'bold',
     },
     input: {
         height: 55,
@@ -89,13 +87,15 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         width: '80%',
         alignItems: 'center',
+        marginTop: 30, 
+        marginBottom: 40
     },
     buttonText: {
         color: '#eeeeee',
         fontSize: 16,
         fontWeight: 'bold',
     },
-    createAccountButton: {
+    accountButton: {
         borderColor: 'transparent',
         borderWidth: 1,
         paddingVertical: 10,
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
         width: '80%',
         alignItems: 'center',
     },
-    createAccountButtonText: {
+    accountButtonText: {
         color: '#165B42',
         fontSize: 16,
         fontWeight: 'bold',
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         marginBottom: 35,
         width: '100%'
     },
-    passwordButtonText:{
+    passwordButtonText: {
         color: '#165B42',
         fontSize: 14,
     }
