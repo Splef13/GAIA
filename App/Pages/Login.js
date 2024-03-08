@@ -1,9 +1,17 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 export default function App() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [hidePassword, setHidePassword] = useState(true);
+
+    const handlePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
 
     return (
         <View style={styles.container}>
@@ -21,21 +29,28 @@ export default function App() {
                 style={styles.input}
                 placeholder="E-mail"
                 value={email}
-                onChangeText={text => setUsername(text)}
+                onChangeText={text => setEmail(text)}
                 keyboardType="email-address"
             />
 
-            {/* ADD MOSTRAR SENHA */}
-            <TextInput
-                style={styles.input}
-                placeholder="Senha"
-                value={password}
-                onChangeText={text => setPassword(text)}
-                secureTextEntry
-            />
+<View style={styles.passwordButtonContainer}>
+                <TouchableOpacity style={styles.passwordButton} onPress={() => setHidePassword(!hidePassword)}>
+                    <Icon name={hidePassword ? 'eye-slash' : 'eye'} size={25} color="#165B42" />
+                </TouchableOpacity>
+            </View>
 
-            <TouchableOpacity style={styles.passwordButton}>
-                <Text style={styles.passwordButtonText}>Esqueceu a senha?</Text>
+            <View style={styles.passwordInputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Senha"
+                    value={password}
+                    onChangeText={text => setPassword(text)}
+                    secureTextEntry={hidePassword}
+                />
+            </View>
+
+            <TouchableOpacity style={styles.newPasswordButton}>
+                <Text style={styles.newPasswordButtonText}>Esqueceu a senha?</Text>
             </TouchableOpacity>
 
             {/* ADD AUTENTICAÇÃO E ROTA PARA HOME */}
@@ -109,13 +124,41 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
-    passwordButton: {
+    newPasswordButton: {
         borderColor: 'transparent',
         marginBottom: 35,
         width: '100%'
     },
-    passwordButtonText:{
+    newPasswordButtonText:{
         color: '#165B42',
         fontSize: 14,
-    }
+    },
+    accountButton: {
+        borderColor: 'transparent',
+        borderWidth: 1,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 8,
+        width: '80%',
+        alignItems: 'center',
+    },
+    accountButtonText: {
+        color: '#165B42',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    passwordInputContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    passwordButtonContainer: {
+        width: '100%',
+        alignItems: 'flex-end',
+        marginRight: 10,
+    },
+    passwordButton: {
+        borderColor: 'transparent',
+        width: 25,
+        justifyContent: 'flex-end',
+    },
 });

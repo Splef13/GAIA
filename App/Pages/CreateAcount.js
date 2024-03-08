@@ -1,11 +1,19 @@
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image } from 'react-native';
 import React, { useState } from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 export default function () {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [hidePassword, setHidePassword] = useState(true);
+    const [hidePasswordConfirm, setHidePasswordConfirm] = useState(true);
+
+    const handlePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
 
     return (
         <View style={styles.container}>
@@ -22,33 +30,46 @@ export default function () {
                 style={styles.input}
                 placeholder="E-mail"
                 value={email}
-                onChangeText={text => setUsername(text)}
+                onChangeText={text => setEmail(text)}
                 keyboardType="email-address"
             />
 
-            {/* ADD MOSTRAR SENHA */}
-            <TextInput
-                style={styles.input}
-                placeholder="Senha"
-                value={password}
-                onChangeText={text => setPassword(text)}
-                secureTextEntry
-            />
+            <View style={styles.passwordButtonContainer}>
+                <TouchableOpacity style={styles.passwordButton} onPress={() => setHidePassword(!hidePassword)}>
+                    <Icon name={hidePassword ? 'eye-slash' : 'eye'} size={25} color="#165B42" />
+                </TouchableOpacity>
+            </View>
 
-            <TextInput
-                style={styles.input}
-                placeholder="Confirmar senha"
-                value={confirmPassword}
-                onChangeText={text => setConfirmPassword(text)}
-                secureTextEntry
-            />
+            <View style={styles.passwordInputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Senha"
+                    value={password}
+                    onChangeText={text => setPassword(text)}
+                    secureTextEntry={hidePassword}
+                />
+            </View>
 
-            {/* ADD AUTENTICAÇÃO E ROTA PARA HOME */}
+            <View style={styles.passwordButtonContainer}>
+                <TouchableOpacity style={styles.passwordButton} onPress={() => setHidePasswordConfirm(!hidePasswordConfirm)}>
+                    <Icon name={hidePasswordConfirm ? 'eye-slash' : 'eye'} size={25} color="#165B42" />
+                </TouchableOpacity>
+            </View>
+
+            <View style={styles.passwordInputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Confirmar senha"
+                    value={confirmPassword}
+                    onChangeText={text => setConfirmPassword(text)}
+                    secureTextEntry={hidePasswordConfirm}
+                />
+            </View>
+
             <TouchableOpacity style={styles.button}>
                 <Text style={styles.buttonText}>Cadastrar</Text>
             </TouchableOpacity>
 
-            {/* ADD ROTA PARA CRIAR CONTA */}
             <TouchableOpacity style={styles.accountButton}>
                 <Text style={styles.accountButtonText}>Já tem uma conta?</Text>
             </TouchableOpacity>
@@ -87,7 +108,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         width: '80%',
         alignItems: 'center',
-        marginTop: 30, 
+        marginTop: 30,
         marginBottom: 40
     },
     buttonText: {
@@ -109,13 +130,18 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
+    passwordInputContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    passwordButtonContainer: {
+        width: '100%',
+        alignItems: 'flex-end',
+        marginRight: 10,
+    },
     passwordButton: {
         borderColor: 'transparent',
-        marginBottom: 35,
-        width: '100%'
+        width: 25,
+        justifyContent: 'flex-end',
     },
-    passwordButtonText: {
-        color: '#165B42',
-        fontSize: 14,
-    }
 });
