@@ -33,7 +33,7 @@ export default function App() {
                 keyboardType="email-address"
             />
 
-<View style={styles.passwordButtonContainer}>
+            <View style={styles.passwordButtonContainer}>
                 <TouchableOpacity style={styles.passwordButton} onPress={() => setHidePassword(!hidePassword)}>
                     <Icon name={hidePassword ? 'eye-slash' : 'eye'} size={25} color="#165B42" />
                 </TouchableOpacity>
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
         marginBottom: 35,
         width: '100%'
     },
-    newPasswordButtonText:{
+    newPasswordButtonText: {
         color: '#165B42',
         fontSize: 14,
     },
