@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-export default function grafics() {
+export default function AddPlantsPage() {
   return (
     <View>
-      <Text>grafics</Text>
+      <Text>addPlants</Text>
     </View>
   )
 }

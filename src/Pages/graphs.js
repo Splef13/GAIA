@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-export default function settings() {
+export default function GraphsPage() {
   return (
     <View>
-      <Text>settings</Text>
+      <Text>graphs</Text>
     </View>
   )
 }
