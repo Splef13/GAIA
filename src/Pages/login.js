@@ -3,17 +3,36 @@ import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HomePage from './home';
+import { FIREBASE_AUTH } from '../../FirebaseConfig';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [hidePassword, setHidePassword] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const auth = FIREBASE_AUTH;
 
     const handlePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
 
     const navigation = useNavigation();
+
+    const signIn = async () =>{
+        setLoading(true);
+        try {
+            const response = await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);    
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+            alert('Erro ao fazer login!');
+        } finally {
+            setLoading(false);
+        }
+    }
+
+
 
     return (
         <View style={styles.container}>

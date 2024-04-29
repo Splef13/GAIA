@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { FIREBASE_AUTH } from '../../FirebaseConfig';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+
 
 
 export default function SignUpPage() {
@@ -15,6 +18,17 @@ export default function SignUpPage() {
         setShowPassword(!showPassword);
     };
 
+    const signUp = async () => {
+        try {
+          const response = await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
+          console.log(response);
+          alert('Verifique seu email!');
+          navigation.navigate('Main', { screen: 'Home' });
+        } catch (error) {
+          console.log(error);
+          alert('Erro ao criar conta!');
+        }
+      };
     const navigation = useNavigation();
 
 
@@ -70,7 +84,7 @@ export default function SignUpPage() {
             </View>
 
             {/* ADD AUTENTICAÇÃO */}
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Main', { screen: 'Home' })}>
+            <TouchableOpacity style={styles.button} onPress={signUp}>
                 <Text style={styles.buttonText}>Entrar</Text>
             </TouchableOpacity>
 
