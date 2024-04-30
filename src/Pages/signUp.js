@@ -85,7 +85,7 @@ export default function SignUpPage() {
 
             {/* ADD AUTENTICAÇÃO */}
             <TouchableOpacity style={styles.button} onPress={signUp}>
-                <Text style={styles.buttonText}>Entrar</Text>
+                <Text style={styles.buttonText}>Cadastrar</Text>
             </TouchableOpacity>
 
             <Pressable style={styles.accountButton} onPress={() => navigation.navigate('Login')}>
