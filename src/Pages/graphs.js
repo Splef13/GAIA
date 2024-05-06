@@ -3,8 +3,8 @@ import React from 'react'
 
 export default function GraphsPage() {
   return (
-    <View>
-      <Text>graphs</Text>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text>Relátorios</Text>
     </View>
   )
 }
