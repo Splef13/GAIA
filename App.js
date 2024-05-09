@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import LoginPage from './src/Pages/login';
 import HomePage from './src/Pages/home';
-import SettingsPage from './src/Pages/settings'; 
+import SettingsPage from './src/Pages/settings';
 import SignUpPage from './src/Pages/signUp';
 import NotificationPage from './src/Pages/notification';
 import AddPlantsPage from './src/Pages/addPlants';
@@ -18,7 +18,7 @@ const Stack = createNativeStackNavigator();
 
 function HomeTabs() {
   return (
-    <Tab.Navigator 
+    <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarShowLabel: false,
         tabBarStyle: [{ display: 'flex', height: 70 }, null],
@@ -28,7 +28,7 @@ function HomeTabs() {
             iconName = 'home';
           } else if (route.name === 'Relátorios') {
             iconName = 'stats-chart';
-          }else if (route.name === 'Criar') {
+          } else if (route.name === 'Criar') {
             iconName = 'add-circle';
           } else if (route.name === 'Notificacao') {
             iconName = 'notifications';
@@ -39,6 +39,7 @@ function HomeTabs() {
         },
         tabBarActiveTintColor: '#165B42',
         tabBarInactiveTintColor: 'gray',
+        tabBarHideOnKeyboard: true,
       })}
     >
       <Tab.Screen name="Home" component={HomePage} options={{ headerShown: false }} />
