@@ -1,19 +1,45 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 import React from 'react'
+import { FIREBASE_AUTH } from '../../FirebaseConfig';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 
-export default function SettingsPage() {
+export default function SettingsPage({ navigation }) {
+  const [email, setEmail] = React.useState('');
+
+  React.useEffect(() => {
+    const unsubscribe = onAuthStateChanged(getAuth(), (user) => {
+      if (user) {
+        setEmail(user.email);
+      } else {
+        // User is signed out.
+        //...
+      }
+    });
+
+    // Clean up the subscription when the component unmounts
+    return () => unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(FIREBASE_AUTH);
+      navigation.navigate('Login');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={{ marginTop: 40, marginBottom: 30, fontSize: 16, fontWeight: 'bold' }}>Configurações</Text>
       <View style={[styles.itens, styles.shadowProp]}>
         <Text>E-mail:</Text>
-        {/* COLOCAR PARA PUXAR O E-MAIL DO BANCO */}
         <Text
           style={{
             fontWeight: 'normal',
             color: '#939393'
           }}
-        >user@email.com</Text>
+        >{email}</Text>
       </View>
       <View style={[styles.itens, styles.shadowProp]}>
       <Pressable >
@@ -31,8 +57,8 @@ export default function SettingsPage() {
       </Pressable>
       </View>
       <View style={[styles.itens, styles.shadowProp]}>
-      <Pressable >
-        <Text style={{color: 'red'}}>Sair</Text>
+      <Pressable onPress={handleLogout} style={styles.sairButton}>
+        <Text style={styles.sairText}>Sair</Text>
       </Pressable>
       </View>
     </View>
@@ -54,13 +80,13 @@ const styles = StyleSheet.create({
     padding: 16,
     elevation: 3
   },
-  sair: {
-    backgroundColor: 'red',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    width: '80%',
+  sairButton: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20
+  },
+  sairText: {
+    color: 'red',
+    fontWeight: 'bold',
   },
 });
