@@ -10,6 +10,7 @@ export default function SettingsPage({ navigation }) {
     const unsubscribe = onAuthStateChanged(getAuth(), (user) => {
       if (user) {
         setEmail(user.email);
+        console.log('Email:', email);
       } else {
         // User is signed out.
         //...
