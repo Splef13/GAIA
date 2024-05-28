@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
-import { getDatabase, ref, set } from 'firebase/database';
+import { getDatabase, ref, set, push } from 'firebase/database';
 import { FIREBASE_DB } from '../../FirebaseConfig';
 
 const AddAttributesPage = () => {
@@ -23,7 +23,8 @@ const AddAttributesPage = () => {
         humidityMin,
         humidityMax,
       };
-      await set(ref(FIREBASE_DB, 'attributes', category), attributes);
+      const newRef = push(ref(FIREBASE_DB, 'attributes'));
+      await set(newRef, attributes);
       alert('Attributes added successfully!');
     } catch (error) {
       console.error(error);

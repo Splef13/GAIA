@@ -2,21 +2,10 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from 'firebase/firestore';
 import { getAuth, initializeAuth, getReactNativePersistence } from 'firebase/auth';
-import { getDatabase, ref, set } from 'firebase/database';
-
+import { getDatabase, ref, set, push } from 'firebase/database';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
-//Firebase de testes
-/*
-const firebaseConfig = {
-  apiKey: "AIzaSyD5is_Mv6CEdpEl-em52Ejf2AvvNwsUnBU",
-  authDomain: "gaia-testedavid.firebaseapp.com",
-  projectId: "gaia-testedavid",
-  storageBucket: "gaia-testedavid.appspot.com",
-  messagingSenderId: "740993891610",
-  appId: "1:740993891610:web:0946d344da7103016380a3"
-};
-*/
+
 //Firebase principal
 const firebaseConfig = {
   apiKey: "AIzaSyBOoMVIeUvOm1oKk53lJKCOAgcPCubl16w",
