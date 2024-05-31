@@ -19,14 +19,25 @@ export default function LoginPage() {
 
   const navigation = useNavigation();
 
-  const signIn = async () =>{
+  const signIn = async () => {
     setLoading(true);
     try {
-      const response = await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);    
-      console.log(response);
+      const response = await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
+      const user = response.user;
+      if (user) {
+        console.log('User is signed in:', user);
+        navigation.navigate('Main', { screen: 'Home' });
+      } else {
+        console.log('User is not signed in.');
+        alert('Erro ao fazer login!');
+      }
     } catch (error) {
       console.log(error);
-      alert('Erro ao fazer login!');
+      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+        alert('E-mail ou senha incorretos.');
+      } else {
+        alert('Erro ao fazer login!');
+      }
     } finally {
       setLoading(false);
     }
@@ -81,7 +92,7 @@ export default function LoginPage() {
       </TouchableOpacity>
 
       {/* ADD AUTENTICAÇÃO */}
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Main', { screen: 'Home' })}>
+      <TouchableOpacity style={styles.button} onPress={signIn}>
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
 
