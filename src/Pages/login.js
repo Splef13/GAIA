@@ -45,7 +45,6 @@ export default function LoginPage() {
 
   useFocusEffect(
     React.useCallback(() => {
-      // Clear the fields when the screen is focused
       setEmail('');
       setPassword('');
       setHidePassword(true);
@@ -72,7 +71,7 @@ export default function LoginPage() {
       />
 
       <View style={styles.passwordButtonContainer}>
-        <TouchableOpacity style={styles.passwordButton} onPress={() => setHidePassword(!hidePassword)}>
+        <TouchableOpacity style={styles.passwordButton} onPress={handlePasswordVisibility}>
           <Icon name={hidePassword? 'eye-slash' : 'eye'} size={25} color="#165B42" />
         </TouchableOpacity>
       </View>
