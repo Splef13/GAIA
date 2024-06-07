@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, Pressable } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-
-
 
 export default function SignUpPage() {
     const [email, setEmail] = useState('');
@@ -15,24 +13,28 @@ export default function SignUpPage() {
     const [hidePasswordConfirm, setHidePasswordConfirm] = useState(true);
 
     const handlePasswordVisibility = () => {
-        setShowPassword(!showPassword);
+        setHidePassword(!hidePassword);
+    };
+
+    const handlePasswordConfirmVisibility = () => {
+        setHidePasswordConfirm(!hidePasswordConfirm);
     };
 
     const signUp = async () => {
         try {
-          const response = await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
-          console.log(response);
-          alert('Verifique seu email!');
-          navigation.navigate('Main', { screen: 'Home' });
+            const response = await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
+            console.log(response);
+            alert('Verifique seu email!');
+            navigation.navigate('Main', { screen: 'Home' });
         } catch (error) {
-          console.log(error);
-          alert('Erro ao criar conta!');
+            console.log(error);
+            alert('Erro ao criar conta!');
         }
-      };
+    };
     const navigation = useNavigation();
 
-
     return (
+        <ScrollView>
         <View style={styles.container}>
             <Image source={require('../Assts/logo.png')}
                 style={{
@@ -42,6 +44,14 @@ export default function SignUpPage() {
                     marginBottom: 20
                 }}
             />
+            <Image source={require('../Assts/mo-removebg-preview.png')}
+        style={{
+          width: 200,
+          height: 50,
+          marginTop: 10,
+          marginBottom: 20
+        }}
+      />
             <Text style={styles.title}>Cadastrar</Text>
             <TextInput
                 style={styles.input}
@@ -51,11 +61,6 @@ export default function SignUpPage() {
                 keyboardType="email-address"
             />
 
-            <View style={styles.passwordButtonContainer}>
-                <TouchableOpacity style={styles.passwordButton} onPress={() => setHidePassword(!hidePassword)}>
-                    <Icon name={hidePassword ? 'eye-slash' : 'eye'} size={25} color="#165B42" />
-                </TouchableOpacity>
-            </View>
 
             <View style={styles.passwordInputContainer}>
                 <TextInput
@@ -67,20 +72,20 @@ export default function SignUpPage() {
                 />
             </View>
 
-            <View style={styles.passwordButtonContainer}>
-                <TouchableOpacity style={styles.passwordButton} onPress={() => setHidePasswordConfirm(!hidePasswordConfirm)}>
-                    <Icon name={hidePasswordConfirm ? 'eye-slash' : 'eye'} size={25} color="#165B42" />
-                </TouchableOpacity>
-            </View>
-
             <View style={styles.passwordInputContainer}>
                 <TextInput
                     style={styles.input}
                     placeholder="Confirmar senha"
                     value={confirmPassword}
-                    onChangeText={text => setConfirmPassword(text)}
-                    secureTextEntry={hidePasswordConfirm}
+                    onChangeText={text => setPassword(text)}
+                    secureTextEntry={hidePassword}
                 />
+            </View>
+
+            <View style={styles.passwordButtonContainer}>
+                <TouchableOpacity style={styles.passwordButton} onPress={handlePasswordVisibility}>
+                    <Text style={{ fontSize: 14, color: '#165B42' }}>Mostrar Senha</Text>
+                </TouchableOpacity>
             </View>
 
             {/* ADD AUTENTICAÇÃO */}
@@ -93,11 +98,13 @@ export default function SignUpPage() {
             </Pressable>
 
         </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
+        marginTop: 80,
         flex: 1,
         backgroundColor: '#eeeeee',
         alignItems: 'center',
@@ -119,6 +126,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         marginBottom: 10,
         width: '100%',
+        elevation: 2,
     },
     button: {
         backgroundColor: '#165B42',
@@ -155,12 +163,13 @@ const styles = StyleSheet.create({
     },
     passwordButtonContainer: {
         width: '100%',
+        height: 40,
         alignItems: 'flex-end',
         marginRight: 10,
+
     },
     passwordButton: {
         borderColor: 'transparent',
-        width: 25,
         justifyContent: 'flex-end',
     },
 });
