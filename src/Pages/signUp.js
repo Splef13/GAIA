@@ -16,11 +16,13 @@ export default function SignUpPage() {
         setHidePassword(!hidePassword);
     };
 
-    const handlePasswordConfirmVisibility = () => {
-        setHidePasswordConfirm(!hidePasswordConfirm);
-    };
+
 
     const signUp = async () => {
+        if (password !== confirmPassword) {
+            alert('Senhas não coincidem!');
+            return;
+          }
         try {
             const response = await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
             console.log(response);
@@ -35,69 +37,69 @@ export default function SignUpPage() {
 
     return (
         <ScrollView>
-        <View style={styles.container}>
-            <Image source={require('../Assts/logo.png')}
-                style={{
-                    width: 200,
-                    height: 200,
-                    marginTop: -20,
-                    marginBottom: 20
-                }}
-            />
-            <Image source={require('../Assts/mo-removebg-preview.png')}
-        style={{
-          width: 200,
-          height: 50,
-          marginTop: 10,
-          marginBottom: 20
-        }}
-      />
-            <Text style={styles.title}>Cadastrar</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="E-mail"
-                value={email}
-                onChangeText={text => setEmail(text)}
-                keyboardType="email-address"
-            />
-
-
-            <View style={styles.passwordInputContainer}>
+            <View style={styles.container}>
+                <Image source={require('../Assts/logo.png')}
+                    style={{
+                        width: 200,
+                        height: 200,
+                        marginTop: -20,
+                        marginBottom: 20
+                    }}
+                />
+                <Image source={require('../Assts/mo-removebg-preview.png')}
+                    style={{
+                        width: 200,
+                        height: 50,
+                        marginTop: 10,
+                        marginBottom: 20
+                    }}
+                />
+                <Text style={styles.title}>Cadastrar</Text>
                 <TextInput
                     style={styles.input}
-                    placeholder="Senha"
-                    value={password}
-                    onChangeText={text => setPassword(text)}
-                    secureTextEntry={hidePassword}
+                    placeholder="E-mail"
+                    value={email}
+                    onChangeText={text => setEmail(text)}
+                    keyboardType="email-address"
                 />
-            </View>
 
-            <View style={styles.passwordInputContainer}>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Confirmar senha"
-                    value={confirmPassword}
-                    onChangeText={text => setPassword(text)}
-                    secureTextEntry={hidePassword}
-                />
-            </View>
 
-            <View style={styles.passwordButtonContainer}>
-                <TouchableOpacity style={styles.passwordButton} onPress={handlePasswordVisibility}>
-                    <Text style={{ fontSize: 14, color: '#165B42' }}>Mostrar Senha</Text>
+                <View style={styles.passwordInputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Senha"
+                        value={password}
+                        onChangeText={text => setPassword(text)}
+                        secureTextEntry={hidePassword}
+                    />
+                </View>
+
+                <View style={styles.passwordInputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Confirmar senha"
+                        value={confirmPassword}
+                        onChangeText={text => setConfirmPassword(text)} // <--- Change this line
+                        secureTextEntry={hidePassword}
+                    />
+                </View>
+
+                <View style={styles.passwordButtonContainer}>
+                    <TouchableOpacity style={styles.passwordButton} onPress={handlePasswordVisibility}>
+                        <Text style={{ fontSize: 14, color: '#165B42' }}>Mostrar Senha</Text>
+                    </TouchableOpacity>
+                </View>
+
+                {/* ADD AUTENTICAÇÃO */}
+                <TouchableOpacity style={styles.button} onPress={signUp}>
+                    <Text style={styles.buttonText}>Cadastrar</Text>
                 </TouchableOpacity>
+
+                <Pressable style={styles.accountButton} onPress={() => navigation.navigate('Login')}>
+                    <Text style={styles.accountButtonText}>Já tem uma conta?</Text>
+                </Pressable>
+
             </View>
-
-            {/* ADD AUTENTICAÇÃO */}
-            <TouchableOpacity style={styles.button} onPress={signUp}>
-                <Text style={styles.buttonText}>Cadastrar</Text>
-            </TouchableOpacity>
-
-            <Pressable style={styles.accountButton} onPress={() => navigation.navigate('Login')}>
-                <Text style={styles.accountButtonText}>Já tem uma conta?</Text>
-            </Pressable>
-
-        </View>
         </ScrollView>
     );
 }
