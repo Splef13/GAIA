@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { getDatabase, ref, set, push } from 'firebase/database';
-import { FIREBASE_DB } from '../../FirebaseConfig';
+import { FIREBASE_DB, FIREBASE_AUTH } from '../../FirebaseConfig';
 
 const AddAttributesPage = () => {
   const [category, setCategory] = useState('');
@@ -11,8 +11,24 @@ const AddAttributesPage = () => {
   const [lightMax, setLightMax] = useState('');
   const [humidityMin, setHumidityMin] = useState('');
   const [humidityMax, setHumidityMax] = useState('');
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    FIREBASE_AUTH.onAuthStateChanged((user) => {
+      if (user) {
+        setCurrentUser(user.uid);
+      } else {
+        setCurrentUser(null);
+      }
+    });
+  }, []);
 
   const handleSubmit = async () => {
+    if (!currentUser) {
+      alert('Você precisa de estar logado para alterar!');
+      return;
+    }
+
     try {
       const attributes = {
         category,
@@ -23,12 +39,12 @@ const AddAttributesPage = () => {
         humidityMin,
         humidityMax,
       };
-      const newRef = push(ref(FIREBASE_DB, 'attributes'));
+      const newRef = push(ref(FIREBASE_DB, `users/${currentUser}/attributes`));
       await set(newRef, attributes);
-      alert('Attributes added successfully!');
+      alert('Atributos adicionado com sucesso!');
     } catch (error) {
       console.error(error);
-      alert('Error adding attributes!');
+      alert('Erro adicionando os atributos!');
     }
   };
 
@@ -43,42 +59,42 @@ const AddAttributesPage = () => {
           onChangeText={(text) => setCategory(text)}
           keyboardType="default"
         />
-        <Text>Minimum Temperature (°C)</Text>
+        <Text>Temperatura minima (°C)</Text>
         <TextInput
           style={styles.input}
           value={tempMin}
           onChangeText={(text) => setTempMin(text)}
           keyboardType="numeric"
         />
-        <Text>Maximum Temperature (°C)</Text>
+        <Text>Temperatura maxima(°C)</Text>
         <TextInput
           style={styles.input}
           value={tempMax}
           onChangeText={(text) => setTempMax(text)}
           keyboardType="numeric"
         />
-        <Text>Minimum Light</Text>
+        <Text>Luminosidade minima</Text>
         <TextInput
           style={styles.input}
           value={lightMin}
           onChangeText={(text) => setLightMin(text)}
           keyboardType="numeric"
         />
-        <Text>Maximum Light</Text>
+        <Text>Luminosidade maxima</Text>
         <TextInput
           style={styles.input}
           value={lightMax}
           onChangeText={(text) => setLightMax(text)}
           keyboardType="numeric"
         />
-        <Text>Minimum Humidity</Text>
+        <Text>Humidade minima</Text>
         <TextInput
           style={styles.input}
           value={humidityMin}
           onChangeText={(text) => setHumidityMin(text)}
           keyboardType="numeric"
         />
-        <Text>Maximum Humidity</Text>
+        <Text>Humidade maxima</Text>
         <TextInput
           style={styles.input}
           value={humidityMax}
@@ -87,7 +103,7 @@ const AddAttributesPage = () => {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <Text style={styles.button} onPress={handleSubmit}>Save</Text>
+        <Text style={styles.button} onPress={handleSubmit}>Adicionar</Text>
       </View>
     </View>
   );
