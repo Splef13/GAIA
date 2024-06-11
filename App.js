@@ -2,7 +2,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons';
+import { UserCircle, PlusCircle, ChartBar, Horse, House, Notification, BellSimple, Gear } from 'phosphor-react-native';
 
 
 import LoginPage from './src/Pages/login';
@@ -21,25 +21,25 @@ function HomeTabs() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarShowLabel: false,
-        tabBarStyle: [{ display: 'flex', height: 70 }, null],
+        tabBarStyle: [{ display: 'flex', height: 70, backgroundColor: "#165B42" }, null],
         tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
           if (route.name === 'Home') {
-            iconName = 'home';
+            return <House size={35} color={color} />;
           } else if (route.name === 'Relátorios') {
-            iconName = 'stats-chart';
+            return <ChartBar size={35} color={color} />;
           } else if (route.name === 'Criar') {
-            iconName = 'add-circle';
+            return <PlusCircle size={35} color={color} />;
           } else if (route.name === 'Notificacao') {
-            iconName = 'notifications';
+            return <BellSimple size={35} color={color} />;
           } else if (route.name === 'Settings') {
-            iconName = 'settings';
+            return <Gear size={35} color={color} />;
           }
-          return <Ionicons name={iconName} size={35} color={color} />;
+          return <UserCircle size={35} color={color} />;
         },
-        tabBarActiveTintColor: '#165B42',
+        tabBarActiveTintColor: '#FFF',
         tabBarInactiveTintColor: 'gray',
         tabBarHideOnKeyboard: true,
+        
       })}
     >
       <Tab.Screen name="Home" component={HomePage} options={{ headerShown: false }} />
@@ -54,7 +54,7 @@ function HomeTabs() {
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName='Login' >
         <Stack.Screen name="Login" component={LoginPage} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUpPage} options={{ headerShown: false }} />
         <Stack.Screen name="Main" component={HomeTabs} options={{ headerShown: false }} />
