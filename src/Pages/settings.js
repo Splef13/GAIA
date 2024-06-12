@@ -10,7 +10,6 @@ export default function SettingsPage({ navigation }) {
     const unsubscribe = onAuthStateChanged(getAuth(), (user) => {
       if (user) {
         setEmail(user.email);
-        console.log('Email:', email);
       } else {
         // User is signed out.
         //...
@@ -50,11 +49,10 @@ export default function SettingsPage({ navigation }) {
           <Text>Configurações de notificaçãos</Text>
         </Pressable>
       </View>
-      <View style={[styles.itens]}>
-        <Pressable >
-          <Text>Termos de uso</Text>
-        </Pressable>
-      </View>
+
+      <Pressable style={[styles.itens]} onPress={() => navigation.navigate('TermosUso')}>
+        <Text>Termos de uso</Text>
+      </Pressable>
       <Pressable onPress={handleLogout} style={styles.itens}>
         <Text style={styles.sairText}>Sair</Text>
       </Pressable>

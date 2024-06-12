@@ -13,6 +13,7 @@ import AddPlantsPage from './src/Pages/addPlants';
 import GraphsPage from './src/Pages/graphs';
 import EsqueceuSenha from './src/Modal/esqueceuSenha';
 import AlterarSenha from './src/Modal/alterarSenha';
+import TermosUso from './src/Modal/termos';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -67,6 +68,10 @@ export default function App() {
         <Stack.Screen name="AlterarSenha" component={AlterarSenha}
           options={{ presentation: 'modal' }}
           options={{ title: 'Alterar Senha', headerStyle: {backgroundColor: '#fff', }, headerTintColor: '#165B42', presentation: 'modal' }}
+        />
+        <Stack.Screen name="TermosUso" component={TermosUso}
+          options={{ presentation: 'modal' }}
+          options={{ title: 'Termos de Uso', headerStyle: {backgroundColor: '#fff', }, headerTintColor: '#165B42', presentation: 'modal' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
