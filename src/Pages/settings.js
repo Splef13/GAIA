@@ -33,7 +33,7 @@ export default function SettingsPage({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={{ marginTop: 40, marginBottom: 30, fontSize: 16, fontWeight: 'bold' }}>Configurações</Text>
-      <View style={[styles.itens, styles.shadowProp]}>
+      <View style={[styles.itens]}>
         <Text>E-mail:</Text>
         <Text
           style={{
@@ -42,26 +42,22 @@ export default function SettingsPage({ navigation }) {
           }}
         >{email}</Text>
       </View>
-      <View style={[styles.itens, styles.shadowProp]}>
-      <Pressable >
+      <Pressable style={[styles.itens]} onPress={() => navigation.navigate('AlterarSenha')}>
         <Text>Alterar Senha</Text>
       </Pressable>
+      <View style={[styles.itens]}>
+        <Pressable >
+          <Text>Configurações de notificaçãos</Text>
+        </Pressable>
       </View>
-      <View style={[styles.itens, styles.shadowProp]}>
-      <Pressable >
-        <Text>Configurações de notificaçãos</Text>
-      </Pressable>
+      <View style={[styles.itens]}>
+        <Pressable >
+          <Text>Termos de uso</Text>
+        </Pressable>
       </View>
-      <View style={[styles.itens, styles.shadowProp]}>
-      <Pressable >
-        <Text>Termos de uso</Text>
-      </Pressable>
-      </View>
-      <View style={[styles.itens, styles.shadowProp]}>
-      <Pressable onPress={handleLogout} style={styles.sairButton}>
+      <Pressable onPress={handleLogout} style={styles.itens}>
         <Text style={styles.sairText}>Sair</Text>
       </Pressable>
-      </View>
     </View>
   )
 }
@@ -80,11 +76,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 16,
     elevation: 3
-  },
-  sairButton: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   sairText: {
     color: 'red',

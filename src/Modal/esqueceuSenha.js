@@ -28,7 +28,7 @@ export default function EsqueceuSenha() {
                 onChangeText={text => setEmail(text)}
                 keyboardType="email-address"
             />
-            <TouchableOpacity style={styles.button} onPress={handleResetPassword}>
+            <TouchableOpacity style={styles.button}>
                 <Text style={styles.buttonText}>Enviar</Text>
             </TouchableOpacity>
         </View>

@@ -12,6 +12,7 @@ import NotificationPage from './src/Pages/notification';
 import AddPlantsPage from './src/Pages/addPlants';
 import GraphsPage from './src/Pages/graphs';
 import EsqueceuSenha from './src/Modal/esqueceuSenha';
+import AlterarSenha from './src/Modal/alterarSenha';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -62,6 +63,10 @@ export default function App() {
         <Stack.Screen name="EsqueceuSenha" component={EsqueceuSenha}
           options={{ presentation: 'modal' }}
           options={{ title: 'Esqueceu a senha?', headerStyle: {backgroundColor: '#fff', }, headerTintColor: '#165B42', presentation: 'modal' }}
+        />
+        <Stack.Screen name="AlterarSenha" component={AlterarSenha}
+          options={{ presentation: 'modal' }}
+          options={{ title: 'Alterar Senha', headerStyle: {backgroundColor: '#fff', }, headerTintColor: '#165B42', presentation: 'modal' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
