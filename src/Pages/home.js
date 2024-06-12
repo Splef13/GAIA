@@ -32,9 +32,9 @@ const HomeScreen = () => {
           }}
         />
         <Text style={styles.headerText}>Gaia</Text>
-        <TouchableOpacity onPress={handleLoginPress} style={{ marginLeft: 'auto' }} >
+        {/* <TouchableOpacity onPress={handleLoginPress} style={{ marginLeft: 'auto' }} >
           <CaretLeft size={35} color="green" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <View style={styles.plantinfo}>
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: "center",
     paddingTop: 64,
-    backgroundColor: "#FFF",
+    // backgroundColor: "#FFF",
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     marginBottom:100,

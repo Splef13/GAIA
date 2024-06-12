@@ -104,7 +104,7 @@ export default function LoginPage() {
           <Text style={styles.createAccountButtonText}>Criar conta</Text>
         </Pressable>
 
-        <TouchableOpacity style={styles.newPasswordButton}>
+        <TouchableOpacity style={styles.newPasswordButton} onPress={() => navigation.navigate('EsqueceuSenha')}>
           <Text style={styles.newPasswordButtonText}>Esqueceu a senha?</Text>
         </TouchableOpacity>
       </View>

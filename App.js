@@ -2,8 +2,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { UserCircle, PlusCircle, ChartBar, Horse, House, Notification, BellSimple, Gear } from 'phosphor-react-native';
-
+import { UserCircle, PlusCircle, ChartBar, BellSimple, Gear, House } from 'phosphor-react-native';
 
 import LoginPage from './src/Pages/login';
 import HomePage from './src/Pages/home';
@@ -12,6 +11,7 @@ import SignUpPage from './src/Pages/signUp';
 import NotificationPage from './src/Pages/notification';
 import AddPlantsPage from './src/Pages/addPlants';
 import GraphsPage from './src/Pages/graphs';
+import EsqueceuSenha from './src/Modal/esqueceuSenha';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -21,25 +21,26 @@ function HomeTabs() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarShowLabel: false,
-        tabBarStyle: [{ display: 'flex', height: 70, backgroundColor: "#165B42" }, null],
-        tabBarIcon: ({ focused, color, size }) => {
-          if (route.name === 'Home') {
-            return <House size={35} color={color} />;
-          } else if (route.name === 'Relátorios') {
-            return <ChartBar size={35} color={color} />;
-          } else if (route.name === 'Criar') {
-            return <PlusCircle size={35} color={color} />;
-          } else if (route.name === 'Notificacao') {
-            return <BellSimple size={35} color={color} />;
-          } else if (route.name === 'Settings') {
-            return <Gear size={35} color={color} />;
+        tabBarStyle: [{ display: 'flex', height: 70, backgroundColor: "#0f402e" }, null],
+        tabBarIcon: ({ color }) => {
+          switch (route.name) {
+            case 'Home':
+              return <House size={35} color={color} />;
+            case 'Relátorios':
+              return <ChartBar size={35} color={color} />;
+            case 'Criar':
+              return <PlusCircle size={35} color={color} />;
+            case 'Notificacao':
+              return <BellSimple size={35} color={color} />;
+            case 'Settings':
+              return <Gear size={35} color={color} />;
+            default:
+              return <UserCircle size={35} color={color} />;
           }
-          return <UserCircle size={35} color={color} />;
         },
         tabBarActiveTintColor: '#FFF',
         tabBarInactiveTintColor: 'gray',
         tabBarHideOnKeyboard: true,
-        
       })}
     >
       <Tab.Screen name="Home" component={HomePage} options={{ headerShown: false }} />
@@ -54,10 +55,14 @@ function HomeTabs() {
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Login' >
+      <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginPage} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUpPage} options={{ headerShown: false }} />
         <Stack.Screen name="Main" component={HomeTabs} options={{ headerShown: false }} />
+        <Stack.Screen name="EsqueceuSenha" component={EsqueceuSenha}
+          options={{ presentation: 'modal' }}
+          options={{ title: 'Esqueceu a senha?', headerStyle: {backgroundColor: '#fff', }, headerTintColor: '#165B42', presentation: 'modal' }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
