@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
 import { getDatabase, ref, set, push } from 'firebase/database';
 import { FIREBASE_DB, FIREBASE_AUTH } from '../../FirebaseConfig';
 
@@ -49,8 +49,9 @@ const AddAttributesPage = () => {
   };
 
   return (
+    <ScrollView>
     <View style={styles.container}>
-      <Text style={styles.title}>Add Attributes</Text>
+      <Text style={styles.title}>Adicionar Planta</Text>
       <View style={styles.form}>
         <Text>Planta</Text>
         <TextInput
@@ -59,42 +60,42 @@ const AddAttributesPage = () => {
           onChangeText={(text) => setCategory(text)}
           keyboardType="default"
         />
-        <Text>Temperatura minima (°C)</Text>
+        <Text>Temperatura mínima (°C)</Text>
         <TextInput
           style={styles.input}
           value={tempMin}
           onChangeText={(text) => setTempMin(text)}
           keyboardType="numeric"
         />
-        <Text>Temperatura maxima(°C)</Text>
+        <Text>Temperatura máxima(°C)</Text>
         <TextInput
           style={styles.input}
           value={tempMax}
           onChangeText={(text) => setTempMax(text)}
           keyboardType="numeric"
         />
-        <Text>Luminosidade minima</Text>
+        <Text>Luminosidade mínima</Text>
         <TextInput
           style={styles.input}
           value={lightMin}
           onChangeText={(text) => setLightMin(text)}
           keyboardType="numeric"
         />
-        <Text>Luminosidade maxima</Text>
+        <Text>Luminosidade máxima</Text>
         <TextInput
           style={styles.input}
           value={lightMax}
           onChangeText={(text) => setLightMax(text)}
           keyboardType="numeric"
         />
-        <Text>Humidade minima</Text>
+        <Text>Humidade mínima</Text>
         <TextInput
           style={styles.input}
           value={humidityMin}
           onChangeText={(text) => setHumidityMin(text)}
           keyboardType="numeric"
         />
-        <Text>Humidade maxima</Text>
+        <Text>Humidade máxima</Text>
         <TextInput
           style={styles.input}
           value={humidityMax}
@@ -106,6 +107,7 @@ const AddAttributesPage = () => {
         <Text style={styles.button} onPress={handleSubmit}>Adicionar</Text>
       </View>
     </View>
+    </ScrollView>
   );
 };
 
@@ -118,6 +120,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    marginTop: 40
   },
   form: {
     marginBottom: 20,
