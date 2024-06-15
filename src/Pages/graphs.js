@@ -28,7 +28,7 @@ const Relatorio = () => {
           attributesList.push({ ...planta.val(), id: planta.key });
         });
         setAttributes(attributesList);
-  
+
         // Create chart data
         const chartDataList = attributesList.map((attribute) => ({
           x: attribute.category,
@@ -36,7 +36,7 @@ const Relatorio = () => {
         }));
         setChartData(chartDataList);
       });
-  
+
       // Fetch readings data
       const readingsRef = ref(FIREBASE_DB, `UsersData/${usuario}/readings`);
       onValue(readingsRef, (snapshot) => {

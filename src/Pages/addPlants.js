@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
 import { getDatabase, ref, set, push } from 'firebase/database';
 import { FIREBASE_DB, FIREBASE_AUTH } from '../../FirebaseConfig';
 
-const AddAttributesPage = () => {
+const AdicionarPlanta = () => {
   const [category, setCategory] = useState('');
   const [tempMin, setTempMin] = useState('');
   const [tempMax, setTempMax] = useState('');
@@ -50,63 +50,63 @@ const AddAttributesPage = () => {
 
   return (
     <ScrollView>
-    <View style={styles.container}>
-      <Text style={styles.title}>Adicionar Planta</Text>
-      <View style={styles.form}>
-        <Text>Planta</Text>
-        <TextInput
-          style={styles.input}
-          value={category}
-          onChangeText={(text) => setCategory(text)}
-          keyboardType="default"
-        />
-        <Text>Temperatura mínima (°C)</Text>
-        <TextInput
-          style={styles.input}
-          value={tempMin}
-          onChangeText={(text) => setTempMin(text)}
-          keyboardType="numeric"
-        />
-        <Text>Temperatura máxima(°C)</Text>
-        <TextInput
-          style={styles.input}
-          value={tempMax}
-          onChangeText={(text) => setTempMax(text)}
-          keyboardType="numeric"
-        />
-        <Text>Luminosidade mínima</Text>
-        <TextInput
-          style={styles.input}
-          value={lightMin}
-          onChangeText={(text) => setLightMin(text)}
-          keyboardType="numeric"
-        />
-        <Text>Luminosidade máxima</Text>
-        <TextInput
-          style={styles.input}
-          value={lightMax}
-          onChangeText={(text) => setLightMax(text)}
-          keyboardType="numeric"
-        />
-        <Text>Humidade mínima</Text>
-        <TextInput
-          style={styles.input}
-          value={humidityMin}
-          onChangeText={(text) => setHumidityMin(text)}
-          keyboardType="numeric"
-        />
-        <Text>Humidade máxima</Text>
-        <TextInput
-          style={styles.input}
-          value={humidityMax}
-          onChangeText={(text) => setHumidityMax(text)}
-          keyboardType="numeric"
-        />
+      <View style={styles.container}>
+        <Text style={styles.title}>Adicionar Planta</Text>
+        <View style={styles.form}>
+          <Text>Planta</Text>
+          <TextInput
+            style={styles.input}
+            value={category}
+            onChangeText={(text) => setCategory(text)}
+            keyboardType="default"
+          />
+          <Text>Temperatura mínima (°C)</Text>
+          <TextInput
+            style={styles.input}
+            value={tempMin}
+            onChangeText={(text) => setTempMin(text)}
+            keyboardType="numeric"
+          />
+          <Text>Temperatura máxima(°C)</Text>
+          <TextInput
+            style={styles.input}
+            value={tempMax}
+            onChangeText={(text) => setTempMax(text)}
+            keyboardType="numeric"
+          />
+          <Text>Luminosidade mínima</Text>
+          <TextInput
+            style={styles.input}
+            value={lightMin}
+            onChangeText={(text) => setLightMin(text)}
+            keyboardType="numeric"
+          />
+          <Text>Luminosidade máxima</Text>
+          <TextInput
+            style={styles.input}
+            value={lightMax}
+            onChangeText={(text) => setLightMax(text)}
+            keyboardType="numeric"
+          />
+          <Text>Humidade mínima</Text>
+          <TextInput
+            style={styles.input}
+            value={humidityMin}
+            onChangeText={(text) => setHumidityMin(text)}
+            keyboardType="numeric"
+          />
+          <Text>Humidade máxima</Text>
+          <TextInput
+            style={styles.input}
+            value={humidityMax}
+            onChangeText={(text) => setHumidityMax(text)}
+            keyboardType="numeric"
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Text style={styles.button} onPress={handleSubmit}>Adicionar</Text>
+        </View>
       </View>
-      <View style={styles.buttonContainer}>
-        <Text style={styles.button} onPress={handleSubmit}>Adicionar</Text>
-      </View>
-    </View>
     </ScrollView>
   );
 };
@@ -144,4 +144,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddAttributesPage;
+export default AdicionarPlanta;
