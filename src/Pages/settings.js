@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native'
+import { View, Text, Pressable, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
