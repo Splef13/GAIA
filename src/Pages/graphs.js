@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
-import { getDatabase, ref, onValue, query, orderByKey, limitToLast } from 'firebase/database';
-import { FIREBASE_DB, FIREBASE_AUTH } from '../../FirebaseConfig';
+import { getDatabase, ref, onValue, query, orderByKey, limitToLast, limitToFirst } from 'firebase/database';
+import { FIREBASE_DB,FIREBASE_AUTH } from '../../FirebaseConfig';
 import { VictoryChart, VictoryLine, VictoryTheme } from 'victory-native';
 
 const Relatorio = () => {
   const [usuario, setUsuario] = useState(null);
   const [attributes, setAttributes] = useState([]);
-  const [chartData, setChartData] = useState([]);
+  const [umidadeY, setUmidadeY] = useState([]);
 
   useEffect(() => {
     FIREBASE_AUTH.onAuthStateChanged((user) => {
@@ -21,7 +21,7 @@ const Relatorio = () => {
 
   useEffect(() => {
     if (usuario) {
-      const attributesRef = ref(FIREBASE_DB, `users/${usuario}/attributes`);
+      const attributesRef = ref(getDatabase(), `users/${usuario}/attributes`);
       onValue(attributesRef, (snapshot) => {
         const attributesList = [];
         snapshot.forEach((planta) => {
@@ -29,20 +29,26 @@ const Relatorio = () => {
         });
         setAttributes(attributesList);
       });
-
-      // Fetch readings data
-      const readingsRef = ref(FIREBASE_DB, `UsersData/${usuario}/readings`);
-      onValue(query(readingsRef, orderByKey('key'), limitToLast(5)), (snapshot) => {
-        const chartDataList = [];
-        snapshot.forEach((reading, index) => {
-          const readingData = reading.val();
-          chartDataList.push({
-            x: index + 1, // de 1 a 5
-            y: readingData.luminosidade,
+    }
+  }, [usuario]);
+  useEffect(() => {
+    if (usuario) {
+      const readingsRef = ref(FIREBASE_DB, `Usuarios/${usuario}/Medicoes`);
+      onValue(
+        query(readingsRef, limitToLast(5)),
+        (snapshot) => {
+          const umidadeYData = [];
+          snapshot.forEach((reading, index) => {
+            const readingData = reading.val();
+            umidadeYData.push(parseFloat(readingData.autitude));
           });
-        });
-        setChartData(chartDataList);
-      });
+
+          setUmidadeY(umidadeYData);
+          // setUmidadeY([709.44,708.64,709.17,709.35,708.91])
+          // setUmidadeY([1,2,3]);
+            // alert(`${umidadeYData}`)
+        }
+      );
     }
   }, [usuario]);
 
@@ -61,30 +67,22 @@ const Relatorio = () => {
             <Text style={styles.attributeValue}>{item.lightMin} - {item.lightMax}</Text>
             <Text style={styles.attributeLabel}>Umidade Ideal:</Text>
             <Text style={styles.attributeValue}>{item.humidityMin}% - {item.humidityMax}%</Text>
-            <VictoryChart
-              theme={VictoryTheme.material}
-            >
-              <VictoryLine
-                style={{
-                  data: { stroke: "#c43a31" },
-                  parent: { border: "1px solid #ccc" }
-                }}
-                data={[
-                  { x: 1, y: 2 },
-                  { x: 2, y: 3 },
-                  { x: 3, y: 5 },
-                  { x: 4, y: 4 },
-                  { x: 5, y: 7 }
-                ]}
-              />
-
-              
-            </VictoryChart>
           </View>
-
         )}
         keyExtractor={(item) => item.id}
       />
+      <VictoryChart
+        theme={VictoryTheme.material}
+      >
+        <VictoryLine
+          style={{
+            data: { stroke: "#c43a31" },
+            parent: { border: "1px solid #ccc" }
+          }}
+          // domain={{ y: [0, 70] }} // adjusted domain to match umidadeY range
+          data={umidadeY.map((y, index) => ({ y }))}
+        />
+      </VictoryChart>
     </View>
   );
 };
