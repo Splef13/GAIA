@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
-import { getDatabase, ref, onValue } from 'firebase/database';
+import { getDatabase, ref, onValue, query, orderByKey, limitToLast } from 'firebase/database';
 import { FIREBASE_DB, FIREBASE_AUTH } from '../../FirebaseConfig';
 import { VictoryChart, VictoryLine, VictoryTheme } from 'victory-native';
 
@@ -28,24 +28,17 @@ const Relatorio = () => {
           attributesList.push({ ...planta.val(), id: planta.key });
         });
         setAttributes(attributesList);
-
-        // Create chart data
-        const chartDataList = attributesList.map((attribute) => ({
-          x: attribute.category,
-          y: (attribute.tempMin + attribute.tempMax) / 2,
-        }));
-        setChartData(chartDataList);
       });
 
       // Fetch readings data
       const readingsRef = ref(FIREBASE_DB, `UsersData/${usuario}/readings`);
-      onValue(readingsRef, (snapshot) => {
+      onValue(query(readingsRef, orderByKey('key'), limitToLast(5)), (snapshot) => {
         const chartDataList = [];
-        snapshot.forEach((reading) => {
+        snapshot.forEach((reading, index) => {
           const readingData = reading.val();
           chartDataList.push({
-            x: readingData.timestamp, // or whatever field you want to use for x-axis
-            y: readingData.value, // or whatever field you want to use for y-axis
+            x: index + 1, // de 1 a 5
+            y: readingData.luminosidade,
           });
         });
         setChartData(chartDataList);
@@ -68,14 +61,24 @@ const Relatorio = () => {
             <Text style={styles.attributeValue}>{item.lightMin} - {item.lightMax}</Text>
             <Text style={styles.attributeLabel}>Umidade Ideal:</Text>
             <Text style={styles.attributeValue}>{item.humidityMin}% - {item.humidityMax}%</Text>
-            <VictoryChart width={350} theme={VictoryTheme.material}>
+            <VictoryChart
+              theme={VictoryTheme.material}
+            >
               <VictoryLine
                 style={{
                   data: { stroke: "#c43a31" },
                   parent: { border: "1px solid #ccc" }
                 }}
-                data={chartData}
+                data={[
+                  { x: 1, y: 2 },
+                  { x: 2, y: 3 },
+                  { x: 3, y: 5 },
+                  { x: 4, y: 4 },
+                  { x: 5, y: 7 }
+                ]}
               />
+
+              
             </VictoryChart>
           </View>
 
