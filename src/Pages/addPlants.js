@@ -29,6 +29,24 @@ const AdicionarPlanta = () => {
       return;
     }
 
+    if (
+      Number(tempMin) > Number(tempMax) ||
+      Number(lightMin) > Number(lightMax) ||
+      Number(humidityMin) > Number(humidityMax)
+    ) {
+      alert('O valor mínimo não pode ser maior que o máximo!');
+      return;
+    }
+
+    if (
+      Number(tempMax) < Number(tempMin) ||
+      Number(lightMax) < Number(lightMin) ||
+      Number(humidityMax) < Number(humidityMin)
+    ) {
+      alert('O valor máximo não pode ser menor que o mínimo!');
+      return;
+    }
+
     try {
       const attributes = {
         category,
