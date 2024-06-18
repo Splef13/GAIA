@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import { FIREBASE_AUTH } from '../../FirebaseConfig';
 import { signInWithEmailAndPassword, updatePassword, getAuth } from 'firebase/auth';
 
 export default function AlterarSenha() {
