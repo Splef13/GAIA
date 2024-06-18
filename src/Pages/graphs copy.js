@@ -10,6 +10,7 @@ const Relatorio = () => {
   const [dadosGrafico, setDadosGrafico] = useState([]);
   const [filterOption, setFilterOption] = useState('autitude');
   const [dominio, setDominio] = useState([700, 750]);
+  const [cor, setCor] = useState('#000')
 
 
   useEffect(() => {
@@ -48,10 +49,11 @@ const Relatorio = () => {
             switch (filterOption) {
               case 'autitude':
                 value = parseFloat(readingData.autitude);
-                setDominio([700, 750])
+                // setDominio([700, 750])
                 break;
               case 'umidade':
                 value = parseFloat(readingData.humidade);
+                setCor("blue")
                 break;
               case 'luminosidade':
                 value = parseFloat(readingData.luminosidade);
@@ -106,28 +108,25 @@ const Relatorio = () => {
         </Picker>
       </View>
 
-      <VictoryChart
-        theme={VictoryTheme.material}
-      >
-        <VictoryLine
-          style={{
-            data: { stroke: "#c43a31" },
-            parent: { border: "1px solid #ccc" }
-          }}
-          labels={({ datum }) => datum.y}
-          labelComponent={<VictoryLabel renderInPortal dy={-20} />}
-          data={dadosGrafico.map((y, index) => ({ x: index, y }))}
-        />
-        <VictoryAxis
-          offsetY={50}
-        />
-        {/* <VictoryAxis
-          
-          tickLabelComponent={() => null} // hide y-axis labels
-          key="y-axis"
-        /> */}
+      <View style={styles.chartContainer}>
+        <VictoryChart
+          theme={VictoryTheme.material}
+        >
+          <VictoryLine
+            style={{
+              data: { stroke: cor },
+              parent: { border: "1px solid #ccc" }
+            }}
+            labels={dadosGrafico.map((y) => `${y}`)}
+            labelComponent={<VictoryLabel renderInPortal dy={-20} />}
+            data={dadosGrafico.map((y, index) => ({ x: index + 1, y }))}
+          />
+          <VictoryAxis
+            offsetY={50}
+          />
 
-      </VictoryChart>
+        </VictoryChart>
+      </View>
     </View>
   );
 };
@@ -157,6 +156,10 @@ const styles = StyleSheet.create({
   attributeValue: {
     marginBottom: 10,
   },
+  chartContainer:{
+    backgroundColor: "#fff",
+    // paddingLeft: -10000,
+  }
 });
 
 export default Relatorio;

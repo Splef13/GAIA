@@ -106,22 +106,25 @@ const Relatorio = () => {
         </Picker>
       </View>
 
-      <VictoryChart
-        theme={VictoryTheme.material}
-      >
-        <VictoryLine
-          style={{
-            data: { stroke: "#c43a31" },
-            parent: { border: "1px solid #ccc" }
-          }}
-          labels={({ datum }) => datum.y}
-          labelComponent={<VictoryLabel renderInPortal dy={-20} />}
-          data={dadosGrafico.map((y, index) => ({ x: index, y }))}
-        />
-        <VictoryAxis
-          offsetY={50}
-        />
-      </VictoryChart>
+      <View style={styles.chartContainer}>
+        <VictoryChart
+          theme={VictoryTheme.material}
+        >
+          <VictoryLine
+            style={{
+              data: { stroke: "#c43a31" },
+              parent: { border: "1px solid #ccc" }
+            }}
+            labels={dadosGrafico.map((y) => `${y}`)}
+            labelComponent={<VictoryLabel renderInPortal dy={-20} />}
+            data={dadosGrafico.map((y, index) => ({ x: index + 1, y }))}
+          />
+          <VictoryAxis
+            offsetY={50}
+          />
+
+        </VictoryChart>
+      </View>
     </View>
   );
 };
@@ -151,6 +154,9 @@ const styles = StyleSheet.create({
   attributeValue: {
     marginBottom: 10,
   },
+  chartContainer:{
+    backgroundColor: "#fff"
+  }
 });
 
 export default Relatorio;
