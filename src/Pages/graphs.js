@@ -99,7 +99,7 @@ const Relatorio = () => {
           onValueChange={(itemValue) => setFilterOption(itemValue)}
         >
           <Picker.Item label="Autitude" value="autitude" />
-          <Picker.Item label="Humidade" value="umidade" />
+          <Picker.Item label="Umidade" value="umidade" />
           <Picker.Item label="Luminosidade" value="luminosidade" />
           <Picker.Item label="Pressão" value="pressão" />
           <Picker.Item label="Temperatura" value="temperatura" />
