@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { getDatabase, ref, onValue, query, orderByKey, limitToLast, limitToFirst } from 'firebase/database';
-import { FIREBASE_DB,FIREBASE_AUTH } from '../../FirebaseConfig';
-import { VictoryChart, VictoryLine, VictoryTheme } from 'victory-native';
-
+import { FIREBASE_DB, FIREBASE_AUTH } from '../../FirebaseConfig';
+import { VictoryChart, VictoryLine, VictoryTheme, VictoryAxis } from 'victory-native';
 const Relatorio = () => {
   const [usuario, setUsuario] = useState(null);
   const [attributes, setAttributes] = useState([]);
-  const [umidadeY, setUmidadeY] = useState([]);
+  const [dadosGrafico, setDadosGrafico] = useState([]);
+  const [filterOption, setFilterOption] = useState('autitude');
+  const [dominio, setDominio] = useState([700, 750]);
+
 
   useEffect(() => {
     FIREBASE_AUTH.onAuthStateChanged((user) => {
@@ -31,26 +34,44 @@ const Relatorio = () => {
       });
     }
   }, [usuario]);
+
   useEffect(() => {
     if (usuario) {
       const readingsRef = ref(FIREBASE_DB, `Usuarios/${usuario}/Medicoes`);
       onValue(
         query(readingsRef, limitToLast(5)),
         (snapshot) => {
-          const umidadeYData = [];
+          const dadosGraficoLista = [];
           snapshot.forEach((reading, index) => {
             const readingData = reading.val();
-            umidadeYData.push(parseFloat(readingData.autitude));
+            let value;
+            switch (filterOption) {
+              case 'autitude':
+                value = parseFloat(readingData.autitude);
+                setDominio([700, 750])
+                break;
+              case 'umidade':
+                value = parseFloat(readingData.humidade);
+                break;
+              case 'luminosidade':
+                value = parseFloat(readingData.luminosidade);
+                break;
+              case 'pressão':
+                value = parseFloat(readingData.pressao);
+                break;
+              case 'temperatura':
+                value = parseFloat(readingData.temperatura);
+                break;
+              default:
+                value = 0;
+            }
+            dadosGraficoLista.push(value);
           });
-
-          setUmidadeY(umidadeYData);
-          // setUmidadeY([709.44,708.64,709.17,709.35,708.91])
-          // setUmidadeY([1,2,3]);
-            // alert(`${umidadeYData}`)
+          setDadosGrafico(dadosGraficoLista);
         }
       );
     }
-  }, [usuario]);
+  }, [usuario, filterOption]);
 
   return (
     <View style={styles.container}>
@@ -71,6 +92,20 @@ const Relatorio = () => {
         )}
         keyExtractor={(item) => item.id}
       />
+
+      <View style={styles.filterContainer}>
+        <Picker
+          selectedValue={filterOption}
+          onValueChange={(itemValue) => setFilterOption(itemValue)}
+        >
+          <Picker.Item label="Autitude" value="autitude" />
+          <Picker.Item label="Humidade" value="umidade" />
+          <Picker.Item label="Luminosidade" value="luminosidade" />
+          <Picker.Item label="Pressão" value="pressão" />
+          <Picker.Item label="Temperatura" value="temperatura" />
+        </Picker>
+      </View>
+
       <VictoryChart
         theme={VictoryTheme.material}
       >
@@ -79,8 +114,12 @@ const Relatorio = () => {
             data: { stroke: "#c43a31" },
             parent: { border: "1px solid #ccc" }
           }}
-          // domain={{ y: [0, 70] }} // adjusted domain to match umidadeY range
-          data={umidadeY.map((y, index) => ({ y }))}
+          data={dadosGrafico.map((y, index) => ({ x: index, y }))}
+        />
+        <VictoryAxis
+          
+          tickLabelComponent={() => null} // hide y-axis labels
+          key="y-axis"
         />
       </VictoryChart>
     </View>
