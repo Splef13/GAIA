@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { UserCircle, PlusCircle, ChartBar, BellSimple, Gear, House } from 'phosphor-react-native';
 
+
+
 import LoginPage from './src/Pages/login';
 import HomePage from './src/Pages/home';
 import SettingsPage from './src/Pages/settings';
@@ -55,6 +57,7 @@ function HomeTabs() {
 }
 
 export default function App() {
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
