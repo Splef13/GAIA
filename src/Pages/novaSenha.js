@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { signInWithEmailAndPassword, updatePassword, getAuth } from 'firebase/auth';
 
-export default function AlterarSenha() {
+
+export default function NovaSenha() {
     const [password, setPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [hidePassword, setHidePassword] = useState(true);
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
-
     const handlePasswordVisibility = () => {
         setHidePassword(!hidePassword);
     };
@@ -46,18 +46,6 @@ export default function AlterarSenha() {
         }
     };
 
-    useEffect(() => {
-        const unsubscribe = getAuth().onAuthStateChanged(user => {
-            if (user) {
-                setUser(user);
-            } else {
-                setUser(null);
-            }
-        });
-
-        return () => unsubscribe();
-    }, []);
-
     return (
         <View style={styles.container}>
             <Text style={{
@@ -69,45 +57,33 @@ export default function AlterarSenha() {
                 Para realizar a alteração da senha atual pressencha os campos.
             </Text>
 
-            {user && (
-                <View>
-                    <View style={styles.passwordInputContainer}>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Senha atual"
-                            value={password}
-                            onChangeText={text => setPassword(text)}
-                            secureTextEntry={hidePassword}
-                        />
-                    </View>
+            <View>
 
-                    <View style={styles.passwordInputContainer}>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Nova senha"
-                            value={newPassword}
-                            onChangeText={text => setNewPassword(text)}
-                            secureTextEntry={hidePassword}
-                        />
-                    </View>
-
-                    <View style={styles.passwordInputContainer}>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Confirmar nova senha"
-                            value={confirmNewPassword}
-                            onChangeText={text => setConfirmNewPassword(text)}
-                            secureTextEntry={hidePassword}
-                        />
-                    </View>
-
-                    <TouchableOpacity style={styles.passwordButton} onPress={handlePasswordVisibility}>
-                        <Text style={{ fontSize: 14, color: '#165B42' }}>Mostrar Senha</Text>
-                    </TouchableOpacity>
+                <View style={styles.passwordInputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Nova senha"
+                        value={newPassword}
+                        onChangeText={text => setNewPassword(text)}
+                        secureTextEntry={hidePassword}
+                    />
                 </View>
-            )}
 
-            {error && <Text style={{ color: 'ed' }}>{error}</Text>}
+                <View style={styles.passwordInputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Confirmar nova senha"
+                        value={confirmNewPassword}
+                        onChangeText={text => setConfirmNewPassword(text)}
+                        secureTextEntry={hidePassword}
+                    />
+                </View>
+
+                <TouchableOpacity style={styles.passwordButton} onPress={handlePasswordVisibility}>
+                    <Text style={{ fontSize: 14, color: '#165B42' }}>Mostrar Senha</Text>
+                </TouchableOpacity>
+            </View>
+
 
             <TouchableOpacity style={styles.button} onPress={handleUpdatePassword} disabled={!user}>
                 <Text style={styles.buttonText}>Confirmar</Text>
@@ -115,6 +91,7 @@ export default function AlterarSenha() {
         </View>
     );
 }
+
 
 const styles = StyleSheet.create({
     container: {

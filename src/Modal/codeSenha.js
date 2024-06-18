@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-export default function EsqueceuSenha() {
-    const [email, setEmail] = useState('');
+export default function CodeSenha() {
+    const [code, setCode] = useState('');
     const navigation = useNavigation();
 
     const handleResetPassword = () => {
@@ -18,18 +18,18 @@ export default function EsqueceuSenha() {
                 marginTop: 20, 
                 textAlign: 'justify'
             }}>
-                Para realizar a redefinição de senha, um link será enviado para o endereço de e-mail fornecido no campo.
+                Insira o código enviado no seu e-mail.
             </Text>
 
             <TextInput
                 style={styles.input}
-                placeholder="Digite seu e-mail"
-                value={email}
+                placeholder="Digite o código"
+                value={code}
                 onChangeText={text => setEmail(text)}
-                keyboardType="email-address"
+                keyboardType="numeric"
             />
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CodeSenha')}>
-                <Text style={styles.buttonText}>Enviar</Text>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('NovaSenha')}> 
+                <Text style={styles.buttonText}>Avançar</Text>
             </TouchableOpacity>
         </View>
     );
