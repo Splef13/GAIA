@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { CaretLeft, CaretRight, Drop, Info, Sun, Thermometer } from "phosphor-react-native";
@@ -79,6 +79,7 @@ const HomeScreen = () => {
   }, [usuario]);
 
   return (
+    <ScrollView>
     <View style={styles.container}>
       <View style={styles.header}>
         <Image
@@ -143,6 +144,7 @@ const HomeScreen = () => {
         />
       </View>
     </View>
+    </ScrollView>
   );
 };
 
