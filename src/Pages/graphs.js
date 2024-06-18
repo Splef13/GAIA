@@ -8,7 +8,7 @@ const Relatorio = () => {
   const [usuario, setUsuario] = useState(null);
   const [attributes, setAttributes] = useState([]);
   const [dadosGrafico, setDadosGrafico] = useState([]);
-  const [filterOption, setFilterOption] = useState('autitude');
+  const [filtro, setFiltro] = useState('autitude');
   const [dominio, setDominio] = useState([708, 710]);
 
 
@@ -45,7 +45,7 @@ const Relatorio = () => {
           snapshot.forEach((reading, index) => {
             const readingData = reading.val();
             let value;
-            switch (filterOption) {
+            switch (filtro) {
               case 'autitude':
                 value = parseFloat(readingData.autitude);
                 setDominio([708, 710]);
@@ -75,7 +75,7 @@ const Relatorio = () => {
         }
       );
     }
-  }, [usuario, filterOption]);
+  }, [usuario, filtro]);
 
   return (
     <View style={styles.container}>
@@ -84,23 +84,23 @@ const Relatorio = () => {
         data={attributes}
         renderItem={({ item }) => (
           <View style={styles.attributeContainer}>
-            <Text style={styles.attributeLabel} key={`${item.id}-label`}>Nome:</Text>
-            <Text style={styles.attributeValue} key={`${item.id}-value`}>{item.category}</Text>
-            <Text style={styles.attributeLabel} key={`${item.id}-label2`}>Temperatura Ideal:</Text>
-            <Text style={styles.attributeValue} key={`${item.id}-value2`}>{item.tempMin}°C - {item.tempMax}°C</Text>
-            <Text style={styles.attributeLabel} key={`${item.id}-label3`}>Luz Ideal:</Text>
-            <Text style={styles.attributeValue} key={`${item.id}-value3`}>{item.lightMin} - {item.lightMax}</Text>
-            <Text style={styles.attributeLabel} key={`${item.id}-label4`}>Umidade Ideal:</Text>
-            <Text style={styles.attributeValue} key={`${item.id}-value4`}>{item.humidityMin}% - {item.humidityMax}%</Text>
+            <Text style={styles.attributeLabel}>Nome:</Text>
+            <Text style={styles.attributeValue}>{item.category}</Text>
+            <Text style={styles.attributeLabel}>Temperatura Ideal:</Text>
+            <Text style={styles.attributeValue}>{item.tempMin}°C - {item.tempMax}°C</Text>
+            <Text style={styles.attributeLabel}>Luz Ideal:</Text>
+            <Text style={styles.attributeValue}>{item.lightMin} - {item.lightMax}</Text>
+            <Text style={styles.attributeLabel}>Umidade Ideal:</Text>
+            <Text style={styles.attributeValue}>{item.humidityMin}% - {item.humidityMax}%</Text>
           </View>
         )}
         keyExtractor={(item) => item.id}
       />
-
+      
       <View style={styles.filterContainer}>
         <Picker
-          selectedValue={filterOption}
-          onValueChange={(itemValue) => setFilterOption(itemValue)}
+          selectedValue={filtro}
+          onValueChange={(filtro) => setFiltro(filtro)}
         >
           <Picker.Item label="Autitude" value="autitude" />
           <Picker.Item label="Umidade" value="umidade" />
@@ -120,7 +120,7 @@ const Relatorio = () => {
               parent: { border: "1px solid #ccc" }
             }}
             domain={{y: dominio}}
-            labels={dadosGrafico.map((y) => `${y}`)}
+            labels={dadosGrafico.map((dados) => `${dados}`)}
             labelComponent={<VictoryLabel renderInPortal dy={-20} />}
             data={dadosGrafico.map((y, index) => ({ x: index + 1, y }))}
           />
