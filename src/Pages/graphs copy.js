@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { getDatabase, ref, onValue, query, orderByKey, limitToLast, limitToFirst } from 'firebase/database';
 import { FIREBASE_DB, FIREBASE_AUTH } from '../../FirebaseConfig';
-import { VictoryChart, VictoryLine, VictoryTheme } from 'victory-native';
-
+import { VictoryChart, VictoryLine, VictoryTheme, VictoryLabel, VictoryAxis } from 'victory-native';
 const Relatorio = () => {
   const [usuario, setUsuario] = useState(null);
   const [attributes, setAttributes] = useState([]);
-  const [umidadeX, setUmidadeX] = useState([]);
-  const [umidadeY, setUmidadeY] = useState([]);
+  const [dadosGrafico, setDadosGrafico] = useState([]);
+  const [filterOption, setFilterOption] = useState('autitude');
+  const [dominio, setDominio] = useState([700, 750]);
 
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const Relatorio = () => {
 
   useEffect(() => {
     if (usuario) {
-      const attributesRef = ref(FIREBASE_DB, `users/${usuario}/attributes`);
+      const attributesRef = ref(getDatabase(), `users/${usuario}/attributes`);
       onValue(attributesRef, (snapshot) => {
         const attributesList = [];
         snapshot.forEach((planta) => {
@@ -34,32 +35,43 @@ const Relatorio = () => {
     }
   }, [usuario]);
 
-
-
   useEffect(() => {
     if (usuario) {
       const readingsRef = ref(FIREBASE_DB, `Usuarios/${usuario}/Medicoes`);
       onValue(
         query(readingsRef, limitToLast(5)),
         (snapshot) => {
-          const umidadeXData = [];
-          const umidadeYData = [];
-          let contador = 1;
-
-          snapshot.forEach((reading) => {
+          const dadosGraficoLista = [];
+          snapshot.forEach((reading, index) => {
             const readingData = reading.val();
-            umidadeXData.push(contador);
-            umidadeYData.push(readingData.autitude);
-            contador++;
+            let value;
+            switch (filterOption) {
+              case 'autitude':
+                value = parseFloat(readingData.autitude);
+                setDominio([700, 750])
+                break;
+              case 'umidade':
+                value = parseFloat(readingData.humidade);
+                break;
+              case 'luminosidade':
+                value = parseFloat(readingData.luminosidade);
+                break;
+              case 'pressão':
+                value = parseFloat(readingData.pressao);
+                break;
+              case 'temperatura':
+                value = parseFloat(readingData.temperatura);
+                break;
+              default:
+                value = 0;
+            }
+            dadosGraficoLista.push(value);
           });
-
-
-          setUmidadeX(umidadeXData);
-          setUmidadeY(umidadeYData);
+          setDadosGrafico(dadosGraficoLista);
         }
       );
     }
-  }, [usuario]);
+  }, [usuario, filterOption]);
 
   return (
     <View style={styles.container}>
@@ -80,21 +92,43 @@ const Relatorio = () => {
         )}
         keyExtractor={(item) => item.id}
       />
-        <VictoryChart
-          theme={VictoryTheme.material}
+
+      <View style={styles.filterContainer}>
+        <Picker
+          selectedValue={filterOption}
+          onValueChange={(itemValue) => setFilterOption(itemValue)}
         >
-
-          <VictoryLine
-            style={{
-              data: { stroke: "#c43a31" },
-              parent: { border: "1px solid #ccc" }
-            }}
-            domain={{ x: [1, 5], y: [0, 2.1] }}
-            data={umidadeX.map((x, index) => ({ x, y: umidadeY[index] }))}
-          />
-
-        </VictoryChart>
+          <Picker.Item label="Autitude" value="autitude" />
+          <Picker.Item label="Humidade" value="umidade" />
+          <Picker.Item label="Luminosidade" value="luminosidade" />
+          <Picker.Item label="Pressão" value="pressão" />
+          <Picker.Item label="Temperatura" value="temperatura" />
+        </Picker>
       </View>
+
+      <VictoryChart
+        theme={VictoryTheme.material}
+      >
+        <VictoryLine
+          style={{
+            data: { stroke: "#c43a31" },
+            parent: { border: "1px solid #ccc" }
+          }}
+          labels={({ datum }) => datum.y}
+          labelComponent={<VictoryLabel renderInPortal dy={-20} />}
+          data={dadosGrafico.map((y, index) => ({ x: index, y }))}
+        />
+        <VictoryAxis
+          offsetY={50}
+        />
+        {/* <VictoryAxis
+          
+          tickLabelComponent={() => null} // hide y-axis labels
+          key="y-axis"
+        /> */}
+
+      </VictoryChart>
+    </View>
   );
 };
 

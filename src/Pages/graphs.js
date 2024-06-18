@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { getDatabase, ref, onValue, query, orderByKey, limitToLast, limitToFirst } from 'firebase/database';
 import { FIREBASE_DB, FIREBASE_AUTH } from '../../FirebaseConfig';
-import { VictoryChart, VictoryLine, VictoryTheme, VictoryAxis } from 'victory-native';
+import { VictoryChart, VictoryLine, VictoryTheme, VictoryLabel, VictoryAxis } from 'victory-native';
 const Relatorio = () => {
   const [usuario, setUsuario] = useState(null);
   const [attributes, setAttributes] = useState([]);
@@ -114,12 +114,12 @@ const Relatorio = () => {
             data: { stroke: "#c43a31" },
             parent: { border: "1px solid #ccc" }
           }}
+          labels={({ datum }) => datum.y}
+          labelComponent={<VictoryLabel renderInPortal dy={-20} />}
           data={dadosGrafico.map((y, index) => ({ x: index, y }))}
         />
         <VictoryAxis
-          
-          tickLabelComponent={() => null} // hide y-axis labels
-          key="y-axis"
+          offsetY={50}
         />
       </VictoryChart>
     </View>
