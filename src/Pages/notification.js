@@ -24,7 +24,27 @@ export default function NotificationPage() {
 
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Button title="Notificar" onPress={ScheduleNotification} />
+      <TouchableOpacity style={styles.button} onPress={ScheduleNotification}>
+        <Text style={styles.buttonText}>Notificar</Text>
+      </TouchableOpacity>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: '#165B42',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    width: '80%',
+    alignItems: 'center',
+    marginTop: 5,
+    marginBottom: 20
+},
+buttonText: {
+    color: '#eeeeee',
+    fontSize: 16,
+    fontWeight: 'bold',
+},
+});
