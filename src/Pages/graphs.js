@@ -80,24 +80,34 @@ const Relatorio = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Relatórios</Text>
-      <FlatList
-        data={attributes}
-        renderItem={({ item }) => (
-          <View style={styles.attributeContainer}>
-            <Text style={styles.attributeLabel}>Nome:</Text>
-            <Text style={styles.attributeValue}>{item.category}</Text>
-            <Text style={styles.attributeLabel}>Temperatura Ideal:</Text>
-            <Text style={styles.attributeValue}>{item.tempMin}°C - {item.tempMax}°C</Text>
-            <Text style={styles.attributeLabel}>Luz Ideal:</Text>
-            <Text style={styles.attributeValue}>{item.lightMin} - {item.lightMax}</Text>
-            <Text style={styles.attributeLabel}>Umidade Ideal:</Text>
-            <Text style={styles.attributeValue}>{item.humidityMin}% - {item.humidityMax}%</Text>
-          </View>
-        )}
-        keyExtractor={(item) => item.id}
-      />
-      
-      <View style={styles.filterContainer}>
+      <View style={styles.containerLista}>
+        <FlatList
+          data={attributes}
+          renderItem={({ item }) => (
+            <View>
+              <View style={styles.attributeContainer}>
+                <Text style={styles.attributeLabel}>Nome:</Text>
+                <Text style={styles.attributeValue}>{item.category}</Text>
+              </View>
+              <View style={styles.attributeContainer}>
+                <Text style={styles.attributeLabel}>Temperatura Ideal:</Text>
+                <Text style={styles.attributeValue}>{item.tempMin}°C - {item.tempMax}°C</Text>
+              </View>
+              <View style={styles.attributeContainer}>
+                <Text style={styles.attributeLabel}>Luz Ideal:</Text>
+                <Text style={styles.attributeValue}>{item.lightMin} - {item.lightMax}</Text>
+              </View>
+              <View style={styles.attributeContainer}>
+                <Text style={styles.attributeLabel}>Umidade Ideal:</Text>
+                <Text style={styles.attributeValue}>{item.humidityMin}% - {item.humidityMax}%</Text>
+              </View>
+            </View>
+          )
+          }
+          keyExtractor={(item) => item.id}
+        />
+      </View>
+      < View style={styles.filterContainer} >
         <Picker
           selectedValue={filtro}
           onValueChange={(filtro) => setFiltro(filtro)}
@@ -108,7 +118,8 @@ const Relatorio = () => {
           <Picker.Item label="Pressão" value="pressão" />
           <Picker.Item label="Temperatura" value="temperatura" />
         </Picker>
-      </View>
+      </View >
+
 
       <View style={styles.chartContainer}>
         <VictoryChart
@@ -119,7 +130,7 @@ const Relatorio = () => {
               data: { stroke: "#c43a31" },
               parent: { border: "1px solid #ccc" }
             }}
-            domain={{y: dominio}}
+            domain={{ y: dominio }}
             labels={dadosGrafico.map((dados) => `${dados}`)}
             labelComponent={<VictoryLabel renderInPortal dy={-20} />}
             data={dadosGrafico.map((y, index) => ({ x: index + 1, y }))}
@@ -127,41 +138,55 @@ const Relatorio = () => {
           <VictoryAxis
             offsetY={50}
           />
-          
+
 
         </VictoryChart>
       </View>
-    </View>
+
+    </View >
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    backgroundColor: '#eeeeee',
+    paddingHorizontal: 16,
   },
   title: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     marginTop: 40,
-    marginBottom: 20,
+    marginBottom: 10,
     color: '#000',
   },
   attributeContainer: {
-    backgroundColor: '#fff',
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 5,
+    flexDirection: 'row',
   },
   attributeLabel: {
     fontWeight: 'bold',
-    marginBottom: 5,
+    margin: 5
   },
   attributeValue: {
-    marginBottom: 10,
+    margin: 5
   },
   chartContainer: {
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    elevation: 2
+  },
+  filterContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    marginBottom: 10,
+    elevation: 2,
+  },
+  containerLista:{
+    height: 170, 
+    backgroundColor: '#fff',
+    borderRadius: 8, 
+    elevation: 2, 
+    marginBottom: 20
   }
 });
 

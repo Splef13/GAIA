@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView} from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { CaretLeft, CaretRight, Drop, Info, Sun, Thermometer } from "phosphor-react-native";
@@ -20,7 +20,7 @@ function Card({ icon: Icon, title, value }) {
 const HomeScreen = () => {
   const [umidade, setUmidade] = useState('');
   const [temperatura, setTemperatura] = useState('');
-  const [luz,setLuz] = useState('');
+  const [luz, setLuz] = useState('');
 
 
   const navigation = useNavigation();
@@ -80,70 +80,66 @@ const HomeScreen = () => {
 
   return (
     <ScrollView>
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Image
-          source={require("../Assts/logo.png")}
-          style={{
-            width: 50,
-            height: 50,
-          }}
-        />
-        <Image
-          source={require("../Assts/mo-removebg-preview.png")}
-          style={{
-            width: 100,
-            height: 25,
-            marginLeft: 10,
-            marginTop: 5
-          }}
-        />
-      </View>
-
-      <View style={styles.plantinfo}>
-        {/* CHAMAR NOME PLANTA NO BANCO */}
-        <Text style={styles.headerText}>Orquídea</Text>
-        <Info size={20} color="green" style={{ marginLeft: 10 }} />
-      </View>
-
-      <View style={styles.plantaa}>
-        <CaretLeft style={styles.runrun} size={40} color="#999999" />
-
-        <View style={styles.plantContainer}>
+      <View style={styles.container}>
+        <View style={styles.header}>
           <Image
-            source={require("../Assts/plant.png")}
+            source={require("../Assts/logo.png")}
             style={{
-              width: 150,
-              height: 190,
+              width: 50,
+              height: 50,
+            }}
+          />
+          <Image
+            source={require("../Assts/mo-removebg-preview.png")}
+            style={{
+              width: 100,
+              height: 25,
+              marginLeft: 10,
+              marginTop: 5
             }}
           />
         </View>
 
-        <CaretRight style={styles.runrun} size={40} color="#999999" />
-      </View>
+        <View style={styles.plantinfo}>
+          {/* CHAMAR NOME PLANTA NO BANCO */}
+          <Text style={styles.headerText}>Orquídea</Text>
+          <Info size={20} color="green" style={{ marginLeft: 10 }} />
+        </View>
 
-      <View style={styles.plantinfo}>
-        <Text style={styles.headerText}>Status: Bom</Text>
-      </View>
+        <View style={styles.plantaa}>
+          <CaretLeft style={styles.runrun} size={40} color="#999999" />
 
-      <View style={styles.cards}>
-        <Card
-          icon={<Drop size={24} color="#165B42" weight="fill" />}
-          title="Umidade"
-          value= {umidade+"%"}
-        />
-        <Card
-          icon={<Thermometer size={24} color="#165B42" weight="fill" />}
-          title="Temperatura"
-          value= {temperatura+"ºC"}
-        />
-        <Card
-          icon={<Sun size={24} color="#165B42" weight="fill" />}
-          title="Iluminação"
-          value={luz+" lx"}
-        />
+          <View style={styles.plantContainer}>
+            <Image
+              source={require("../Assts/plant.png")}
+              style={{
+                width: 150,
+                height: 190,
+              }}
+            />
+          </View>
+
+          <CaretRight style={styles.runrun} size={40} color="#999999" />
+        </View>
+
+        <View style={styles.cards}>
+          <Card
+            icon={<Drop size={24} color="#165B42" weight="fill" />}
+            title="Umidade"
+            value={umidade + "%"}
+          />
+          <Card
+            icon={<Thermometer size={24} color="#165B42" weight="fill" />}
+            title="Temperatura"
+            value={temperatura + "°C"}
+          />
+          <Card
+            icon={<Sun size={24} color="#165B42" weight="fill" />}
+            title="Iluminação"
+            value={luz + " lx"}
+          />
+        </View>
       </View>
-    </View>
     </ScrollView>
   );
 };
@@ -151,6 +147,7 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#eeeeee',
   },
   header: {
     flexDirection: "row",
@@ -200,7 +197,7 @@ const styles = StyleSheet.create({
     gap: 24,
     marginTop: 24,
     paddingHorizontal: 24,
-    
+
   },
   card: {
     width: "100%",
