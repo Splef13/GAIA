@@ -1,5 +1,5 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import * as Notifications from 'expo-notifications';
 
 Notifications.setNotificationHandler({
@@ -11,7 +11,22 @@ Notifications.setNotificationHandler({
 });
 
 export default function NotificationPage() {
+  const [permissionGranted, setPermissionGranted] = useState(false);
+
+  useEffect(() => {
+    async function requestPermission() {
+      const permission = await Notifications.requestPermissionsAsync();
+      setPermissionGranted(permission.granted);
+    }
+    requestPermission();
+  }, []);
+
   const ScheduleNotification = async()=>{
+    if (!permissionGranted) {
+      alert("You need to grant permission to receive notifications");
+      return;
+    }
+
     const theNotification = await Notifications.scheduleNotificationAsync({
       content: {
         title: "GAIA",
