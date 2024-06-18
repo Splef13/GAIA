@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { CaretLeft, CaretRight, Drop, Info, Sun, Thermometer } from "phosphor-react-native";
+import { getDatabase, ref, onValue, query, orderByKey, limitToLast, limitToFirst } from 'firebase/database';
+import { FIREBASE_DB, FIREBASE_AUTH } from '../../FirebaseConfig';
+
 
 function Card({ icon: Icon, title, value }) {
   return (
@@ -15,11 +18,65 @@ function Card({ icon: Icon, title, value }) {
 }
 
 const HomeScreen = () => {
+  const [umidade, setUmidade] = useState('');
+  const [temperatura, setTemperatura] = useState('');
+  const [luz,setLuz] = useState('');
+
+
   const navigation = useNavigation();
 
   const handleLoginPress = () => {
     navigation.navigate("Login");
   };
+  const [usuario, setUsuario] = useState(null);
+  const [attributes, setAttributes] = useState([]);
+
+
+  useEffect(() => {
+    FIREBASE_AUTH.onAuthStateChanged((user) => {
+      if (user) {
+        setUsuario(user.uid);
+      } else {
+        setUsuario(null);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (usuario) {
+      const attributesRef = ref(getDatabase(), `users/${usuario}/attributes`);
+      onValue(attributesRef, (snapshot) => {
+        const attributesList = [];
+        snapshot.forEach((planta) => {
+          attributesList.push({ ...planta.val(), id: planta.key });
+        });
+        setAttributes(attributesList);
+      });
+    }
+  }, [usuario]);
+
+  useEffect(() => {
+    if (usuario) {
+      const readingsRef = ref(FIREBASE_DB, `Usuarios/${usuario}/Medicoes`);
+      onValue(
+        query(readingsRef, limitToLast(1)),
+        (snapshot) => {
+          const umidadeValor = [];
+          const luzValor = [];
+          const tempValor = [];
+          snapshot.forEach((reading, index) => {
+            const readingData = reading.val();
+            umidadeValor.push(readingData.humidade);
+            luzValor.push(readingData.luminosidade);
+            tempValor.push(readingData.temperatura);
+          });
+          setUmidade(umidadeValor);
+          setLuz(luzValor);
+          setTemperatura(tempValor);
+        }
+      );
+    }
+  }, [usuario]);
 
   return (
     <View style={styles.container}>
@@ -39,7 +96,7 @@ const HomeScreen = () => {
 
       <View style={styles.plantinfo}>
         <Text style={styles.headerText}>Planta</Text>
-        <Info size={20} color="green" style={{marginLeft: 10}} />
+        <Info size={20} color="green" style={{ marginLeft: 10 }} />
       </View>
 
       <View style={styles.plantaa}>
@@ -58,17 +115,17 @@ const HomeScreen = () => {
         <Card
           icon={<Drop size={24} color="#165B42" weight="fill" />}
           title="Umidade"
-          value="21%"
+          value= {umidade+"%"}
         />
         <Card
           icon={<Thermometer size={24} color="#165B42" weight="fill" />}
           title="Temperatura"
-          value="30"
+          value= {temperatura+"º"}
         />
         <Card
           icon={<Sun size={24} color="#165B42" weight="fill" />}
           title="Exposição"
-          value="20%"
+          value={luz+"lx"}
         />
       </View>
     </View>
@@ -89,7 +146,7 @@ const styles = StyleSheet.create({
     // backgroundColor: "#FFF",
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    marginBottom:100,
+    marginBottom: 100,
   },
   headerText: {
     color: "#1c1c1c",
@@ -98,9 +155,9 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
 
-  plantinfo:{
+  plantinfo: {
     alignContent: "center",
-    alignItems:"center",
+    alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
     marginTop: 10,
@@ -110,13 +167,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingHorizontal: 130,
     alignContent: "center",
-    alignItems:"center",
+    alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
-    
+
   },
 
-  runrun:{
+  runrun: {
     paddingHorizontal: 24,
   },
 
