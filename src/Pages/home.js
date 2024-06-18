@@ -31,22 +31,36 @@ const HomeScreen = () => {
             height: 50,
           }}
         />
-        <Text style={styles.headerText}>Gaia</Text>
-        {/* <TouchableOpacity onPress={handleLoginPress} style={{ marginLeft: 'auto' }} >
-          <CaretLeft size={35} color="green" />
-        </TouchableOpacity> */}
+        <Image
+          source={require("../Assts/mo-removebg-preview.png")}
+          style={{
+            width: 100,
+            height: 25,
+            marginLeft: 10,
+            marginTop: 5
+          }}
+        />
       </View>
 
       <View style={styles.plantinfo}>
-        <Text style={styles.headerText}>Planta</Text>
-        <Info size={20} color="green" style={{marginLeft: 10}} />
+        {/* CHAMAR NOME PLANTA NO BANCO */}
+        <Text style={styles.headerText}>Orquídea</Text>
+        <Info size={20} color="green" style={{ marginLeft: 10 }} />
       </View>
 
       <View style={styles.plantaa}>
         <CaretLeft style={styles.runrun} size={40} color="#999999" />
-        <Card>
 
-        </Card>
+        <View style={styles.plantContainer}>
+          <Image
+            source={require("../Assts/plant.png")}
+            style={{
+              width: 150,
+              height: 190,
+            }}
+          />
+        </View>
+
         <CaretRight style={styles.runrun} size={40} color="#999999" />
       </View>
 
@@ -58,17 +72,17 @@ const HomeScreen = () => {
         <Card
           icon={<Drop size={24} color="#165B42" weight="fill" />}
           title="Umidade"
-          value="21%"
+          value="63%"
         />
         <Card
           icon={<Thermometer size={24} color="#165B42" weight="fill" />}
           title="Temperatura"
-          value="30"
+          value="25°C"
         />
         <Card
           icon={<Sun size={24} color="#165B42" weight="fill" />}
-          title="Exposição"
-          value="20%"
+          title="Iluminação"
+          value="10.457 lx"
         />
       </View>
     </View>
@@ -86,10 +100,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: "center",
     paddingTop: 64,
-    // backgroundColor: "#FFF",
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    marginBottom:100,
+    // marginBottom: 50,
   },
   headerText: {
     color: "#1c1c1c",
@@ -97,10 +110,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginLeft: 12,
   },
-
-  plantinfo:{
+  plantContainer: {
+    padding: 50,
+    backgroundColor: "#fff",
+    borderRadius: 500,
+    elevation: 2
+  },
+  plantinfo: {
     alignContent: "center",
-    alignItems:"center",
+    alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
     marginTop: 10,
@@ -110,31 +128,30 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingHorizontal: 130,
     alignContent: "center",
-    alignItems:"center",
+    alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
-    
+
   },
-
-  runrun:{
-    paddingHorizontal: 24,
+  runrun: {
+    margin: 20
   },
-
-
   cards: {
     justifyContent: "space-around",
     gap: 24,
     marginTop: 24,
     paddingHorizontal: 24,
+    
   },
   card: {
     width: "100%",
     flexDirection: "row",
     backgroundColor: "#FFF",
-    borderRadius: 16,
+    borderRadius: 8,
     gap: 16,
     paddingHorizontal: 24,
     paddingVertical: 16,
+    elevation: 2
   },
   cardText: {
     fontSize: 18,

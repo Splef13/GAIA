@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { getDatabase, ref, set, push } from 'firebase/database';
 import { FIREBASE_DB, FIREBASE_AUTH } from '../../FirebaseConfig';
 
@@ -69,61 +69,78 @@ const AdicionarPlanta = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.title}>Adicionar Planta</Text>
+        <Text style={styles.title}>Incluir no Jardim</Text>
         <View style={styles.form}>
-          <Text>Planta</Text>
+          <Text>Espécie:</Text>
           <TextInput
-            style={styles.input}
+            style={styles.inputText}
             value={category}
             onChangeText={(text) => setCategory(text)}
             keyboardType="default"
           />
-          <Text>Temperatura mínima (°C)</Text>
-          <TextInput
-            style={styles.input}
-            value={tempMin}
-            onChangeText={(text) => setTempMin(text)}
-            keyboardType="numeric"
-          />
-          <Text>Temperatura máxima(°C)</Text>
-          <TextInput
-            style={styles.input}
-            value={tempMax}
-            onChangeText={(text) => setTempMax(text)}
-            keyboardType="numeric"
-          />
-          <Text>Luminosidade mínima</Text>
-          <TextInput
-            style={styles.input}
-            value={lightMin}
-            onChangeText={(text) => setLightMin(text)}
-            keyboardType="numeric"
-          />
-          <Text>Luminosidade máxima</Text>
-          <TextInput
-            style={styles.input}
-            value={lightMax}
-            onChangeText={(text) => setLightMax(text)}
-            keyboardType="numeric"
-          />
-          <Text>Humidade mínima</Text>
-          <TextInput
-            style={styles.input}
-            value={humidityMin}
-            onChangeText={(text) => setHumidityMin(text)}
-            keyboardType="numeric"
-          />
-          <Text>Humidade máxima</Text>
-          <TextInput
-            style={styles.input}
-            value={humidityMax}
-            onChangeText={(text) => setHumidityMax(text)}
-            keyboardType="numeric"
-          />
+          <Text style={styles.inputTitle}>Condições ideais para a nova espécie</Text>
+          <Text style={styles.inputTitle}>Temperatura</Text>
+          <View style={styles.inputContainer}>
+            <Text>Min.:</Text>
+            <TextInput
+              style={styles.inputNumber}
+              value={tempMin}
+              onChangeText={(text) => setTempMin(text)}
+              keyboardType="numeric"
+            />
+            <Text>°C</Text>
+            <Text>Máx.:</Text>
+            <TextInput
+              style={styles.inputNumber}
+              value={tempMax}
+              onChangeText={(text) => setTempMax(text)}
+              keyboardType="numeric"
+            />
+            <Text>°C</Text>
+          </View>
+
+          <Text style={styles.inputTitle}>Luminosidade</Text>
+          <View style={styles.inputContainer}>
+            <Text>Min.:</Text>
+            <TextInput
+              style={styles.inputNumber}
+              value={lightMin}
+              onChangeText={(text) => setLightMin(text)}
+              keyboardType="numeric"
+            />
+            <Text>lx</Text>
+            <Text>Máx.:</Text>
+            <TextInput
+              style={styles.inputNumber}
+              value={lightMax}
+              onChangeText={(text) => setLightMax(text)}
+              keyboardType="numeric"
+            />
+            <Text>lx</Text>
+          </View>
+          <Text style={styles.inputTitle}>Umidade</Text>
+          <View style={styles.inputContainer}>
+            <Text>Min.:</Text>
+            <TextInput
+              style={styles.inputNumber}
+              value={humidityMin}
+              onChangeText={(text) => setHumidityMin(text)}
+              keyboardType="numeric"
+            />
+            <Text>%</Text>
+            <Text>Máx.:</Text>
+            <TextInput
+              style={styles.inputNumber}
+              value={humidityMax}
+              onChangeText={(text) => setHumidityMax(text)}
+              keyboardType="numeric"
+            />
+            <Text>%</Text>
+          </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <Text style={styles.button} onPress={handleSubmit}>Adicionar</Text>
-        </View>
+        <Pressable style={styles.button}>
+          <Text style={styles.buttonText} onPress={handleSubmit}>Adicionar</Text>
+        </Pressable>
       </View>
     </ScrollView>
   );
@@ -132,34 +149,60 @@ const AdicionarPlanta = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    backgroundColor: '#eeeeee',
+    paddingHorizontal: 16,
   },
   title: {
-    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
-    marginTop: 40
+    fontSize: 20,
+    marginTop: 40, 
+    marginBottom: 20
   },
-  form: {
-    marginBottom: 20,
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
+  inputTitle: {
+    fontWeight: 'bold', 
     marginBottom: 10,
+    marginTop: 10
   },
-  buttonContainer: {
-    alignItems: 'center',
+  inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  inputText: {
+    height: 45,
+    backgroundColor: "#ffffff",
+    shadowColor: '#000000',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    width: '100%',
+    marginTop: 10,
+    elevation: 2
+  },
+  inputNumber: {
+    height: 45,
+    backgroundColor: "#ffffff",
+    shadowColor: '#000000',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    width: '25%',
+    marginTop: 10,
+    elevation: 2,
   },
   button: {
-    backgroundColor: '#4CAF50',
-    color: '#fff',
-    padding: 10,
-    borderRadius: 5,
+    backgroundColor: '#165B42',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    width: '100%',
+    alignItems: 'center',
+    marginTop: 30,
   },
+  buttonText: {
+    color: '#eeeeee',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center'
+  }
 });
 
 export default AdicionarPlanta;
