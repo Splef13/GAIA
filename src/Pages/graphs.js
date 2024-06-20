@@ -9,7 +9,8 @@ const Relatorio = () => {
   const [attributes, setAttributes] = useState([]);
   const [dadosGrafico, setDadosGrafico] = useState([]);
   const [filtro, setFiltro] = useState('autitude');
-  const [dominio, setDominio] = useState([708, 710]);
+  const [dominio, setDominio] = useState();
+  const [cor,setCor] = useState();
 
 
   useEffect(() => {
@@ -25,9 +26,9 @@ const Relatorio = () => {
   useEffect(() => {
     if (usuario) {
       const attributesRef = ref(getDatabase(), `users/${usuario}/attributes`);
-      onValue(attributesRef, (snapshot) => {
+      onValue(attributesRef, (docs) => {
         const attributesList = [];
-        snapshot.forEach((planta) => {
+        docs.forEach((planta) => {
           attributesList.push({ ...planta.val(), id: planta.key });
         });
         setAttributes(attributesList);
@@ -40,9 +41,9 @@ const Relatorio = () => {
       const readingsRef = ref(FIREBASE_DB, `Usuarios/${usuario}/Medicoes`);
       onValue(
         query(readingsRef, limitToLast(5)),
-        (snapshot) => {
+        (medicoes) => {
           const dadosGraficoLista = [];
-          snapshot.forEach((reading, index) => {
+          medicoes.forEach((reading, index) => {
             const readingData = reading.val();
             let value;
             switch (filtro) {
@@ -51,30 +52,35 @@ const Relatorio = () => {
                 const min = Math.min(...dadosGraficoLista);
                 const max = Math.max(...dadosGraficoLista);
                 setDominio([min - 1, max + 1]);
+                setCor("#34C759");
                 break;
               case 'umidade':
                 value = parseFloat(readingData.humidade);
                 const minUmidade = Math.min(...dadosGraficoLista);
                 const maxUmidade = Math.max(...dadosGraficoLista);
                 setDominio([minUmidade - 1, maxUmidade + 1]);
+                setCor("#45B3FA");
                 break;
               case 'luminosidade':
                 value = parseFloat(readingData.luminosidade);
                 const minLuminosidade = Math.min(...dadosGraficoLista);
                 const maxLuminosidade = Math.max(...dadosGraficoLista);
                 setDominio([minLuminosidade - 1, maxLuminosidade + 1]);
+                setCor("#F7DC6F");
                 break;
               case 'pressão':
                 value = parseFloat(readingData.pressao);
                 const minPressao = Math.min(...dadosGraficoLista);
                 const maxPressao = Math.max(...dadosGraficoLista);
                 setDominio([minPressao - 0.05, maxPressao + 0.05]);
+                setCor("#9B59B6");
                 break;
               case 'temperatura':
                 value = parseFloat(readingData.temperatura);
                 const minTemperatura = Math.min(...dadosGraficoLista);
                 const maxTemperatura = Math.max(...dadosGraficoLista);
                 setDominio([minTemperatura - 1, maxTemperatura + 1]);
+                setCor("#E74C3C")
                 break;
               default:
                 value = 0;
@@ -137,15 +143,15 @@ const Relatorio = () => {
         >
           <VictoryLine
             style={{
-              data: { stroke: "#c43a31" },
+              data: { stroke: cor },
               parent: { border: "1px solid #ccc" }
             }}
             domain={{ y: dominio }}
-            labels={dadosGrafico.map((dados) => `${dados}`)}
+            labels={dadosGrafico.map((valor) => `${valor}`)}
             labelComponent={<VictoryLabel renderInPortal dy={-20} />}
             data={dadosGrafico.map((y, index) => ({ x: index + 1, y }))}
             animate={{
-              duration: 1000
+              duration: 500
             }}
           />
           <VictoryAxis
