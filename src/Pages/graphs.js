@@ -1,3 +1,7 @@
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: Encountered two children with the same key, `text`.']);
+
+
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
@@ -10,7 +14,7 @@ const Relatorio = () => {
   const [dadosGrafico, setDadosGrafico] = useState([]);
   const [filtro, setFiltro] = useState('autitude');
   const [dominio, setDominio] = useState();
-  const [cor,setCor] = useState();
+  const [cor, setCor] = useState();
 
 
   useEffect(() => {
@@ -147,15 +151,27 @@ const Relatorio = () => {
               parent: { border: "1px solid #ccc" }
             }}
             domain={{ y: dominio }}
+            /* eslint-disable react/* */
             labels={dadosGrafico.map((valor) => `${valor}`)}
             labelComponent={<VictoryLabel renderInPortal dy={-20} />}
+            /* eslint-enable react/* */
             data={dadosGrafico.map((y, index) => ({ x: index + 1, y }))}
             animate={{
               duration: 500
             }}
           />
           <VictoryAxis
-            offsetY={50}
+           tickValues={[1,2,3,4,5]}
+            style={{
+            
+              axis: { stroke: "#756f6a" },
+              axisLabel: { fontSize: 20, padding: 30 },
+              grid: {
+                stroke: 'rgba(128, 128, 128, 0.3)', // transparent grey
+              },
+              ticks: { stroke: "grey", size: 5 },
+              tickLabels: { fontSize: 0, padding: 5 }
+            }}
           />
 
 
@@ -200,11 +216,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     elevation: 2,
   },
-  containerLista:{
-    height: 170, 
+  containerLista: {
+    height: 170,
     backgroundColor: '#fff',
-    borderRadius: 8, 
-    elevation: 2, 
+    borderRadius: 8,
+    elevation: 2,
     marginBottom: 20
   }
 });
