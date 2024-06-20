@@ -48,23 +48,33 @@ const Relatorio = () => {
             switch (filtro) {
               case 'autitude':
                 value = parseFloat(readingData.autitude);
-                setDominio([708, 710]);
+                const min = Math.min(...dadosGraficoLista);
+                const max = Math.max(...dadosGraficoLista);
+                setDominio([min - 1, max + 1]);
                 break;
               case 'umidade':
                 value = parseFloat(readingData.humidade);
-                setDominio([60, 66]);
+                const minUmidade = Math.min(...dadosGraficoLista);
+                const maxUmidade = Math.max(...dadosGraficoLista);
+                setDominio([minUmidade - 1, maxUmidade + 1]);
                 break;
               case 'luminosidade':
                 value = parseFloat(readingData.luminosidade);
-                setDominio([-10, 10]);
+                const minLuminosidade = Math.min(...dadosGraficoLista);
+                const maxLuminosidade = Math.max(...dadosGraficoLista);
+                setDominio([minLuminosidade - 1, maxLuminosidade + 1]);
                 break;
               case 'pressão':
                 value = parseFloat(readingData.pressao);
-                setDominio([930.89, 931]);
+                const minPressao = Math.min(...dadosGraficoLista);
+                const maxPressao = Math.max(...dadosGraficoLista);
+                setDominio([minPressao - 0.05, maxPressao + 0.05]);
                 break;
               case 'temperatura':
                 value = parseFloat(readingData.temperatura);
-                setDominio([24, 25]);
+                const minTemperatura = Math.min(...dadosGraficoLista);
+                const maxTemperatura = Math.max(...dadosGraficoLista);
+                setDominio([minTemperatura - 1, maxTemperatura + 1]);
                 break;
               default:
                 value = 0;
@@ -134,6 +144,9 @@ const Relatorio = () => {
             labels={dadosGrafico.map((dados) => `${dados}`)}
             labelComponent={<VictoryLabel renderInPortal dy={-20} />}
             data={dadosGrafico.map((y, index) => ({ x: index + 1, y }))}
+            animate={{
+              duration: 1000
+            }}
           />
           <VictoryAxis
             offsetY={50}
